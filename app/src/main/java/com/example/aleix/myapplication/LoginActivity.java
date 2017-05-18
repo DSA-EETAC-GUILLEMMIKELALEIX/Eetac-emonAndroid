@@ -34,6 +34,12 @@ import java.util.List;
 
 import android.content.Intent;
 
+import com.example.aleix.myapplication.Entity.User;
+
+import org.json.JSONArray;
+//import org.json.JSONException;
+import org.json.JSONObject;
+
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
@@ -315,7 +321,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         private final String mEmail;
         private final String mPassword;
 
-        UserLoginTask(String email, String password) {
+        UserLoginTask(String email, String password) /*throws JSONException*/ {
             mEmail = email;
             mPassword = password;
         }
@@ -361,6 +367,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
         }
+
+        /*String json = CADENA_JSON;
+        List<User> lista_Users = new ArrayList<>(); //inicializamos la lista donde almacenaremos los objetos Fruta
+
+        JSONObject object = new JSONObject(json); //Creamos un objeto JSON a partir de la cadena
+        JSONArray json_array = object.optJSONArray("frutas"); //cogemos cada uno de los elementos dentro de la etiqueta "frutas"
+
+        for(int i = 0; i < json_array.length(); i++) {
+            lista_Users.add(new User(json_array.getJSONObject(i))); //creamos un objeto Fruta y lo insertamos en la lista
+        }*/
     }
 }
 
