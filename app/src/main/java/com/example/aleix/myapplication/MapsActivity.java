@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -16,6 +18,7 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -35,6 +38,8 @@ import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+
+import java.util.Random;
 
 public class MapsActivity extends FragmentActivity implements  OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener{
 
@@ -62,7 +67,6 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
 
         createLocationRequest();
 
-
         Button Menu = (Button) findViewById(R.id.Menu);
 
         Menu.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +92,8 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+
+        eetakemons();
     }
 
     protected void createLocationRequest() {
@@ -201,5 +207,73 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
     protected void stopLocationUpdates() {
         LocationServices.FusedLocationApi.removeLocationUpdates(
                 mGoogleApiClient, this);
+    }
+
+    private void eetakemons(){
+        //Fer un GET i que et retorni el nom de un eetakemon
+        String eetakemon = "";
+
+        LatLng aa = new LatLng(41.27539318720677, 1.9851908683449437); //Biblioteca
+        LatLng bb = new LatLng(41.274566700768275, 1.9851908683449437);//Residencia
+        LatLng cc = new LatLng(41.275224665468244, 1.986177653066079); //Entrada EETAC-1
+        LatLng dd = new LatLng(41.275561305325134, 1.9871539771884272);//Entrada EETAC-2
+        LatLng ee = new LatLng(41.27564395319903, 1.9865638912051509); //Entrada ESAB
+        LatLng ff = new LatLng(41.27557178752102, 1.9858227968461506); //Canasta Basquet
+        LatLng gg = new LatLng(41.27510855453976, 1.9833691116218688); //Pont
+        LatLng hh = new LatLng(41.27581166751877, 1.9877861738041247); //Edifici professors
+        LatLng ii = new LatLng(41.27523514765666, 1.9881053566871287); //Entrada UOC
+        LatLng jj = new LatLng(41.275731035685105, 1.989977538569292); //Parking
+
+        Random rand = new Random();
+        int n = rand.nextInt(9);
+
+        if (n==0){
+            mMap.addMarker(new MarkerOptions()
+                    .position(aa)
+                    .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
+        }
+        if (n==1){
+            mMap.addMarker(new MarkerOptions()
+                    .position(bb)
+                    .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
+        }if (n==2){
+            mMap.addMarker(new MarkerOptions()
+                    .position(cc)
+                    .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
+        }if (n==3){
+            mMap.addMarker(new MarkerOptions()
+                    .position(dd)
+                    .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
+        }if (n==4){
+            mMap.addMarker(new MarkerOptions()
+                    .position(ee)
+                    .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
+        }if (n==5){
+            mMap.addMarker(new MarkerOptions()
+                    .position(ff)
+                    .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
+        }if (n==6){
+            mMap.addMarker(new MarkerOptions()
+                    .position(gg)
+                    .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
+        }if (n==7){
+            mMap.addMarker(new MarkerOptions()
+                    .position(hh)
+                    .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
+        }if (n==8){
+            mMap.addMarker(new MarkerOptions()
+                    .position(ii)
+                    .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
+        }if (n==9){
+            mMap.addMarker(new MarkerOptions()
+                    .position(jj)
+                    .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
+        }
+    }
+
+    public Bitmap resizeMapIcons(String iconName, int width, int height){
+        Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(),getResources().getIdentifier(iconName, "drawable", getPackageName()));
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(imageBitmap, width, height, false);
+        return resizedBitmap;
     }
 }
