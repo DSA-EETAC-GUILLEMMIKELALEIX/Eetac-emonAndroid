@@ -39,7 +39,18 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
+import org.json.JSONObject;
+
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
+import java.net.URL;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MapsActivity extends FragmentActivity implements  OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener{
 
@@ -94,6 +105,14 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
         mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 
         eetakemons();
+
+        /*Timer myTimer = new Timer();
+        myTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                eetakemons();
+            }
+        }, 0, 300000);*/
     }
 
     protected void createLocationRequest() {
@@ -209,9 +228,62 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
                 mGoogleApiClient, this);
     }
 
-    private void eetakemons(){
-        //Fer un GET i que et retorni el nom de un eetakemon
-        String eetakemon = "";
+    private void eetakemons() {
+        String eetakemon = "bernorlax";
+        int i;
+        int eetakemonnormal = 0;
+        int eetakemonlegend = 0;
+
+        //3 eetakemons nivell inferior
+        for(i=0; i<2; i++){
+            int id =1;
+            //Fer un GET i que et retorni el nom de un eetakemon de nivell inferior
+            try {
+                URL url = new URL("http://localhost:8081/EetakemonGo/Eetakemon/" + id);
+                HttpURLConnection client = null;
+                client = (HttpURLConnection) url.openConnection();
+                client.setRequestMethod("POST");
+                client.setRequestProperty("Key","Value");//???????
+                client.setDoOutput(true);
+
+                OutputStream outputPost = new BufferedOutputStream(client.getOutputStream());
+                eetakemon = outputPost.toString();
+                outputPost.flush();
+                outputPost.close();
+                if(client != null) // Make sure the connection is not null.
+                        client.disconnect();
+            }catch(MalformedURLException error) {
+                //Handles an incorrectly entered URL
+            }
+            catch(SocketTimeoutException error) {
+                //Handles URL access timeout.
+            }
+            catch (IOException error) {
+                //Handles input and output errors
+            }
+
+            assignarLocalitzacio(eetakemon);
+        }
+
+        //1 eetakemon nivell normal cada 20 min
+        eetakemonnormal++;
+        if (eetakemonnormal % 4 == 0){
+            //Fer un GET i que et retorni el nom de un eetakemon de nivell normal
+
+            assignarLocalitzacio(eetakemon);
+        }
+
+        //1 eetakemon nivell normal cada 1 hora
+        eetakemonlegend++;
+        if (eetakemonlegend % 12 == 0){
+            //Fer un GET i que et retorni el nom de un eetakemon de nivell legendari
+
+            assignarLocalitzacio(eetakemon);
+        }
+    }
+
+
+    public void assignarLocalitzacio(String eetakemon){ //Al fer el get, se li haurà de passar el nom del eetakemon per pritar-lo al mapa
 
         LatLng aa = new LatLng(41.27539318720677, 1.9851908683449437); //Biblioteca
         LatLng bb = new LatLng(41.274566700768275, 1.9851908683449437);//Residencia
