@@ -245,34 +245,46 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
     private Eetakemon eetak = new Eetakemon();
 
     private void eetakemons() throws IOException {
-        String eetakemon = "bernorlax";
+        String tipo;
         int i;
 
         //3 eetakemons nivell inferior
         for(i=0; i<3; i++){
+            tipo="Inferior";
             int id =1;
             //Fer un GET  que et retorni el nom de un eetakemon de nivell inferior
             Service aaa =Service.retrofit.create(Service.class);
-            final Call<Eetakemon> call = aaa.eetak(eetakemon);
+            final Call<Eetakemon> call = aaa.eetak(tipo);
             eetak = call.execute().body();
             assignarLocalitzacio(eetak.getNombre());
         }
 
         //1 eetakemon nivell normal cada 20 min
-        eetakemonnormal++;
-        if (eetakemonnormal % 4 == 0){
+        tipo="Normal";
+        //eetakemonnormal++;
+        Service aaa =Service.retrofit.create(Service.class);
+        final Call<Eetakemon> call = aaa.eetak(tipo);
+        eetak = call.execute().body();
+        assignarLocalitzacio(eetak.getNombre());
+        /*if (eetakemonnormal % 4 == 0){
             //Fer un GET i que et retorni el nom de un eetakemon de nivell normal
 
             assignarLocalitzacio(eetakemon);
-        }
+        }*/
 
         //1 eetakemon nivell normal cada 1 hora
-        eetakemonlegend++;
-        if (eetakemonlegend % 12 == 0){
+        tipo="Legendario";
+        //eetakemonlegend++;
+        Service bbb =Service.retrofit.create(Service.class);
+        final Call<Eetakemon> call2 = bbb.eetak(tipo);
+        eetak = call2.execute().body();
+        assignarLocalitzacio(eetak.getNombre());
+        /*if (eetakemonlegend % 12 == 0){
+            tipo="Inferior";
             //Fer un GET i que et retorni el nom de un eetakemon de nivell legendari
 
             assignarLocalitzacio(eetakemon);
-        }
+        }*/
     }
 
     public void assignarLocalitzacio(String eetakemon){ //Al fer el get, se li haurà de passar el nom del eetakemon per pritar-lo al mapa

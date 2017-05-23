@@ -34,11 +34,14 @@ import java.util.List;
 
 import android.content.Intent;
 
+import com.example.aleix.myapplication.Entity.Eetakemon;
 import com.example.aleix.myapplication.Entity.User;
 
 import org.json.JSONArray;
 //import org.json.JSONException;
 import org.json.JSONObject;
+
+import retrofit2.Call;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -46,6 +49,10 @@ import static android.Manifest.permission.READ_CONTACTS;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+
+    private String email, pass;
+    EditText mEmail, mPass;
+    private User usr = new User();
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -97,6 +104,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             @Override
             public void onClick(View view) {
                 attemptLogin();
+                User usuario = new User();
+                mEmail=(EditText)findViewById(R.id.email);
+                email = mEmail.getText().toString();
+                usuario.setEmail(email);
+                mPass=(EditText)findViewById(R.id.password);
+                pass = mPass.getText().toString();
+                usuario.setEmail(pass);
+                Service aaa =Service.retrofit.create(Service.class);
+                final Call<User> log = aaa.Login(usuario);
                 Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
                 startActivity(intent);
             }
