@@ -1,6 +1,7 @@
 package com.example.aleix.myapplication;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -19,7 +20,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.aleix.myapplication.Entity.Eetakemon;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -41,16 +45,20 @@ import com.google.android.gms.location.LocationServices;
 
 import org.json.JSONObject;
 
-import java.io.BufferedOutputStream;
+
 import java.io.IOException;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.SocketTimeoutException;
-import java.net.URL;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.GET;
 
 public class MapsActivity extends FragmentActivity implements  OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener{
 
@@ -60,6 +68,8 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
     LocationRequest mLocationRequest = new LocationRequest();
     Location mLastLocation;
     Marker mCurrLocationMarker;
+    int eetakemonnormal = 0;
+    int eetakemonlegend = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,13 +114,17 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 
-        eetakemons();
+        try {
+            eetakemons();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         /*Timer myTimer = new Timer();
         myTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                eetakemons();
+                eetakemons(); //Probar funcio simple
             }
         }, 0, 300000);*/
     }
@@ -228,41 +242,20 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
                 mGoogleApiClient, this);
     }
 
-    private void eetakemons() {
+    private Eetakemon eetak = new Eetakemon();
+
+    private void eetakemons() throws IOException {
         String eetakemon = "bernorlax";
         int i;
-        int eetakemonnormal = 0;
-        int eetakemonlegend = 0;
 
         //3 eetakemons nivell inferior
-        for(i=0; i<2; i++){
+        for(i=0; i<3; i++){
             int id =1;
-            //Fer un GET i que et retorni el nom de un eetakemon de nivell inferior
-            try {
-                URL url = new URL("http://localhost:8081/EetakemonGo/Eetakemon/" + id);
-                HttpURLConnection client = null;
-                client = (HttpURLConnection) url.openConnection();
-                client.setRequestMethod("POST");
-                client.setRequestProperty("Key","Value");//???????
-                client.setDoOutput(true);
-
-                OutputStream outputPost = new BufferedOutputStream(client.getOutputStream());
-                eetakemon = outputPost.toString();
-                outputPost.flush();
-                outputPost.close();
-                if(client != null) // Make sure the connection is not null.
-                        client.disconnect();
-            }catch(MalformedURLException error) {
-                //Handles an incorrectly entered URL
-            }
-            catch(SocketTimeoutException error) {
-                //Handles URL access timeout.
-            }
-            catch (IOException error) {
-                //Handles input and output errors
-            }
-
-            assignarLocalitzacio(eetakemon);
+            //Fer un GET  que et retorni el nom de un eetakemon de nivell inferior
+            Service aaa =Service.retrofit.create(Service.class);
+            final Call<Eetakemon> call = aaa.eetak(eetakemon);
+            eetak = call.execute().body();
+            assignarLocalitzacio(eetak.getNombre());
         }
 
         //1 eetakemon nivell normal cada 20 min
@@ -282,7 +275,6 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
         }
     }
 
-
     public void assignarLocalitzacio(String eetakemon){ //Al fer el get, se li haurà de passar el nom del eetakemon per pritar-lo al mapa
 
         LatLng aa = new LatLng(41.27539318720677, 1.9851908683449437); //Biblioteca
@@ -291,7 +283,7 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
         LatLng dd = new LatLng(41.275561305325134, 1.9871539771884272);//Entrada EETAC-2
         LatLng ee = new LatLng(41.27564395319903, 1.9865638912051509); //Entrada ESAB
         LatLng ff = new LatLng(41.27557178752102, 1.9858227968461506); //Canasta Basquet
-        LatLng gg = new LatLng(41.27510855453976, 1.9833691116218688); //Pont
+        LatLng gg = new LatLng(41.275515250643224, 1.9840220282936217); //Pont
         LatLng hh = new LatLng(41.27581166751877, 1.9877861738041247); //Edifici professors
         LatLng ii = new LatLng(41.27523514765666, 1.9881053566871287); //Entrada UOC
         LatLng jj = new LatLng(41.275731035685105, 1.989977538569292); //Parking
