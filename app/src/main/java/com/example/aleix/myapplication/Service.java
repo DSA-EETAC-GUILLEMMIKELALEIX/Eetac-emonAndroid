@@ -32,6 +32,6 @@ interface Service {
     @GET("/EetakemonGo/Eetakemon/{tipo}")
     Call<Eetakemon> eetak(@Body String tipo);
 
-    @POST("/EetakemonGo/User/Login")
+    @POST("/EetakemonGo/User/LoginApp")
     Call<User> Login(@Body User usuario); //CAMBIAR EL PATH
 }
