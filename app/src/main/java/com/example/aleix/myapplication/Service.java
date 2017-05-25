@@ -29,7 +29,7 @@ interface Service {
             .addConverterFactory(GsonConverterFactory.create()).client(okHttpClient)
             .build();*/
 
-    @GET("/EetakemonGo/Eetakemon/{tipo}")
+    @POST("/EetakemonGo/Eetakemon/Tipo")
     Call<Eetakemon> eetak(@Body String tipo);
 
     @POST("/EetakemonGo/User/LoginApp")

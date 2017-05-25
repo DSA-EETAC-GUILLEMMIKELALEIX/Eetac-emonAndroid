@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.aleix.myapplication.Entity.Eetakemon;
+import com.example.aleix.myapplication.Entity.User;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -63,13 +64,15 @@ import retrofit2.http.GET;
 public class MapsActivity extends FragmentActivity implements  OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener{
 
     private GoogleMap mMap;
-    final String TAG = "MAPACT";
+    final String tag = "MAPACT";
     private GoogleApiClient mGoogleApiClient;
     LocationRequest mLocationRequest = new LocationRequest();
     Location mLastLocation;
     Marker mCurrLocationMarker;
     int eetakemonnormal = 0;
     int eetakemonlegend = 0;
+
+    private Button act;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,7 +172,7 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
             if (getMyLatLng() != null) {
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(getMyLatLng(), 19f));
             }
-            Log.i(TAG, "My Location enabled");
+            Log.i(tag, "My Location enabled");
         }
     }
 
@@ -211,13 +214,13 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
                             if (getMyLatLng() != null) {
                                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(getMyLatLng(), 19f));
                             }
-                            Log.i(TAG, "My Location enabled");
+                            Log.i(tag, "My Location enabled");
                         }
 
                     } else {
-                        Log.i(TAG, "" + ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION));
-                        Log.i(TAG, "" + PackageManager.PERMISSION_GRANTED);
-                        Log.e(TAG, "My Location Errors");
+                        Log.i(tag, "" + ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION));
+                        Log.i(tag, "" + PackageManager.PERMISSION_GRANTED);
+                        Log.e(tag, "My Location Errors");
                     }
                 }
             }
@@ -239,36 +242,61 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
                 mGoogleApiClient, this);
     }
 
-    private Eetakemon e = new Eetakemon();
-
     private void eetakemons(){
         String eetakemon = "bernorlax";
         assignarLocalitzacio(eetakemon);
-        String tipo;
         int i;
-/*
+
         //3 eetakemons nivell inferior
         for(i=0; i<3; i++){
-            tipo="Inferior";
-            //Fer un GET  que et retorni el nom de un eetakemon de nivell inferior
-            Service aaa =Service.retrofit.create(Service.class);
-            Call<Eetakemon> call = aaa.eetak(tipo);
-            call.enqueue(new Callback<Eetakemon>() {
-                @Override
-                public void onResponse(Call<Eetakemon> eetakresponse, Response<Eetakemon> response) {
-                    try {
-                        e= eetakresponse.execute().body();
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
-                }
+            final String tipo="Inferior";
 
+            final Button actbttn = (Button) findViewById(R.id.ACT);
+
+            actbttn.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onFailure(Call<Eetakemon> call, Throwable t) {
+                public void onClick(View view) {
+                    OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+                    Retrofit.Builder builder = new Retrofit.Builder()
+                            .baseUrl("http://10.0.2.2:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
+                            .addConverterFactory(GsonConverterFactory.create());
+//
+                    Retrofit retrofit =
+                            builder
+                                    .client(
+                                            httpClient.build()
+                                    )
+                                    .build();
+
+                    // Create an instance of our GitHub API interface.
+                    Service acta = retrofit.create(Service.class);
+
+                    // Create a call instance for looking up Retrofit contributors.
+                    Call<Eetakemon> call = acta.eetak(tipo);
+                    System.out.println("***********DATOS**************************");
+
+
+                    // Fetch and print a list of the contributors to the library.
+                    call.enqueue(new Callback() {
+
+                        //***************Comprobacion de que recoge los datos**********
+                        @Override
+                        public void onResponse(Call call, Response response) {
+                            Eetakemon e = new Eetakemon();
+                            assignarLocalitzacio(e.getNombre());
+                            Log.d(tag, "Mostrar Eetakemon correctamente");
+                        }
+
+                        @Override
+                        public void onFailure(Call call, Throwable t) {
+                            Toast.makeText(MapsActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
+                            Log.d(tag, "ERROR al mostrar");
+                        }
+                    });
+
 
                 }
             });
-            assignarLocalitzacio(e.getNombre());
         }
         /*
         //1 eetakemon nivell normal cada 20 min
