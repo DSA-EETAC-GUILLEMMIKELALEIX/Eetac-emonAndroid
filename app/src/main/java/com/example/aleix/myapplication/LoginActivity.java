@@ -19,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,10 +30,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
+import android.widget.Toast;
 
 import com.example.aleix.myapplication.Entity.Eetakemon;
 import com.example.aleix.myapplication.Entity.User;
@@ -41,7 +44,12 @@ import org.json.JSONArray;
 //import org.json.JSONException;
 import org.json.JSONObject;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -50,11 +58,10 @@ import static android.Manifest.permission.READ_CONTACTS;
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
-    private String email, pass;
+    String tag = "Login";
     EditText mEmail, mPass;
-    private User usr = new User();
-
-    /**
+    private Button login;
+        /**
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
@@ -97,24 +104,64 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
+        login = (Button) findViewById(R.id.Entrar);
+
         Button mEmailSignInButton = (Button) findViewById(R.id.Entrar);
         Button Register = (Button) findViewById(R.id.Registrarse);
+
+        mEmail=(EditText)findViewById(R.id.email);
+
+        mPass=(EditText)findViewById(R.id.password);
 
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                String email= mEmail.getText().toString();
+                String pass = mPass.getText().toString();
+
                 attemptLogin();
-                User usuario = new User();
-                mEmail=(EditText)findViewById(R.id.email);
-                email = mEmail.getText().toString();
-                usuario.setEmail(email);
-                mPass=(EditText)findViewById(R.id.password);
-                pass = mPass.getText().toString();
-                usuario.setEmail(pass);
-                Service aaa =Service.retrofit.create(Service.class);
-                final Call<User> log = aaa.Login(usuario);
-                Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
-                startActivity(intent);
+
+                OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+                Retrofit.Builder builder = new Retrofit.Builder()
+                        .baseUrl("http://10.0.2.2:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
+                        .addConverterFactory(GsonConverterFactory.create());
+//
+                Retrofit retrofit =
+                        builder
+                                .client(
+                                        httpClient.build()
+                                )
+                                .build();
+
+                // Create an instance of our GitHub API interface.
+                Service login = retrofit.create(Service.class);
+                User usuario = new User(email, pass);
+
+                // Create a call instance for looking up Retrofit contributors.
+                Call<User> call = login.Login(usuario);
+                System.out.println("***********DATOS**************************");
+
+
+                // Fetch and print a list of the contributors to the library.
+                call.enqueue(new Callback() {
+
+                    //***************Comprobacion de que recoge los datos**********
+                    @Override
+                    public void onResponse(Call call, Response response) {
+                        User contributor = (User) response.body();
+                        Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
+                        startActivity(intent);
+                        Log.d(tag, "Logueado correctamente");
+                    }
+
+                    @Override
+                    public void onFailure(Call call, Throwable t) {
+                        Toast.makeText(LoginActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
+                        Log.d(tag, "ERROR al loguear");
+                    }
+                });
+
+
             }
         });
 

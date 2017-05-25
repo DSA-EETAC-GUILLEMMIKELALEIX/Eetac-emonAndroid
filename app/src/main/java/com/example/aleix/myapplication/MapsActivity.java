@@ -114,11 +114,8 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 
-        try {
+
             eetakemons();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         /*Timer myTimer = new Timer();
         myTimer.schedule(new TimerTask() {
@@ -242,44 +239,59 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
                 mGoogleApiClient, this);
     }
 
-    private Eetakemon eetak = new Eetakemon();
+    private Eetakemon e = new Eetakemon();
 
-    private void eetakemons() throws IOException {
+    private void eetakemons(){
+        String eetakemon = "bernorlax";
+        assignarLocalitzacio(eetakemon);
         String tipo;
         int i;
-
+/*
         //3 eetakemons nivell inferior
         for(i=0; i<3; i++){
             tipo="Inferior";
-            int id =1;
             //Fer un GET  que et retorni el nom de un eetakemon de nivell inferior
             Service aaa =Service.retrofit.create(Service.class);
-            final Call<Eetakemon> call = aaa.eetak(tipo);
-            eetak = call.execute().body();
-            assignarLocalitzacio(eetak.getNombre());
-        }
+            Call<Eetakemon> call = aaa.eetak(tipo);
+            call.enqueue(new Callback<Eetakemon>() {
+                @Override
+                public void onResponse(Call<Eetakemon> eetakresponse, Response<Eetakemon> response) {
+                    try {
+                        e= eetakresponse.execute().body();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
 
+                @Override
+                public void onFailure(Call<Eetakemon> call, Throwable t) {
+
+                }
+            });
+            assignarLocalitzacio(e.getNombre());
+        }
+        /*
         //1 eetakemon nivell normal cada 20 min
         tipo="Normal";
         //eetakemonnormal++;
         Service aaa =Service.retrofit.create(Service.class);
         final Call<Eetakemon> call = aaa.eetak(tipo);
-        eetak = call.execute().body();
-        assignarLocalitzacio(eetak.getNombre());
-        /*if (eetakemonnormal % 4 == 0){
+        e = call.execute().body();
+        assignarLocalitzacio(e.getNombre());
+        if (eetakemonnormal % 4 == 0){
             //Fer un GET i que et retorni el nom de un eetakemon de nivell normal
 
             assignarLocalitzacio(eetakemon);
-        }*/
+        }
 
         //1 eetakemon nivell normal cada 1 hora
         tipo="Legendario";
         //eetakemonlegend++;
         Service bbb =Service.retrofit.create(Service.class);
         final Call<Eetakemon> call2 = bbb.eetak(tipo);
-        eetak = call2.execute().body();
-        assignarLocalitzacio(eetak.getNombre());
-        /*if (eetakemonlegend % 12 == 0){
+        e = call2.execute().body();
+        assignarLocalitzacio(e.getNombre());
+        if (eetakemonlegend % 12 == 0){
             tipo="Inferior";
             //Fer un GET i que et retorni el nom de un eetakemon de nivell legendari
 

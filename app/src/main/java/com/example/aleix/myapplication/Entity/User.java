@@ -20,6 +20,12 @@ public class User {
 
     }
 
+
+    public User(String email, String contrasena){
+        this.email=email;
+        this.contrasena=contrasena;
+    }
+
     public String getNombre() {
         return nombre;
     }
