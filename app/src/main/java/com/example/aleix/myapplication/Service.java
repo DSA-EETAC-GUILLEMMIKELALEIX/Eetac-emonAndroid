@@ -30,7 +30,7 @@ interface Service {
             .build();*/
 
     @POST("/EetakemonGo/Eetakemon/Tipo")
-    Call<Eetakemon> eetak(@Body String tipo);
+    Call<Eetakemon> Eetak(@Body Eetakemon eetak);
 
     @POST("/EetakemonGo/User/LoginApp")
     Call<User> Login(@Body User usuario);

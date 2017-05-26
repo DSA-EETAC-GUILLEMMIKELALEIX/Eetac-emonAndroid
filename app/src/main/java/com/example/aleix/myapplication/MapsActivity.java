@@ -72,7 +72,7 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
     int eetakemonnormal = 0;
     int eetakemonlegend = 0;
 
-    private Button act;
+    private Button actbttn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -249,13 +249,12 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
 
         //3 eetakemons nivell inferior
         for(i=0; i<3; i++){
-            final String tipo="Inferior";
-
-            final Button actbttn = (Button) findViewById(R.id.ACT);
+            actbttn = (Button) findViewById(R.id.ACT);
 
             actbttn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    String tipo="Inferior";
                     OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
                     Retrofit.Builder builder = new Retrofit.Builder()
                             .baseUrl("http://10.0.2.2:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
@@ -270,14 +269,16 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
 
                     // Create an instance of our GitHub API interface.
                     Service acta = retrofit.create(Service.class);
+                    Eetakemon eetakemonn = new Eetakemon(tipo);
 
                     // Create a call instance for looking up Retrofit contributors.
-                    Call<Eetakemon> call = acta.eetak(tipo);
+                    Call<Eetakemon> call = acta.Eetak(eetakemonn);
                     System.out.println("***********DATOS**************************");
 
 
                     // Fetch and print a list of the contributors to the library.
                     call.enqueue(new Callback() {
+
 
                         //***************Comprobacion de que recoge los datos**********
                         @Override
