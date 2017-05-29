@@ -31,7 +31,7 @@ public class Eetakemon{
 
     public Eetakemon(String tipo)
     {
-        this.tipo="tipo";
+        this.tipo=tipo;
     }
 
     public int getId() {

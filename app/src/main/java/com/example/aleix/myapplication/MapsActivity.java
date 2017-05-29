@@ -253,6 +253,7 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
     }
 
     private void eetakemons(){
+        mMap.clear();
         String eetakemon = "bernorlax";
         assignarLocalitzacio(eetakemon);
         int i;
@@ -267,7 +268,7 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
                     String tipo="Inferior";
                     OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
                     Retrofit.Builder builder = new Retrofit.Builder()
-                            .baseUrl("http://10.0.2.2:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
+                            .baseUrl("http://10.192.230.97:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
                             .addConverterFactory(GsonConverterFactory.create());
 //
                     Retrofit retrofit =
@@ -282,18 +283,20 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
                     Eetakemon eetakemonn = new Eetakemon(tipo);
 
                     // Create a call instance for looking up Retrofit contributors.
-                    Call<Eetakemon> call = acta.Eetak(eetakemonn);
+                    Call<Eetakemon> call1 = acta.Eetak(eetakemonn);
                     System.out.println("***********DATOS**************************");
 
 
                     // Fetch and print a list of the contributors to the library.
-                    call.enqueue(new Callback() {
+                    call1.enqueue(new Callback<Eetakemon>() {
 
 
                         //***************Comprobacion de que recoge los datos**********
                         @Override
-                        public void onResponse(Call call, Response response) {
-                            Eetakemon e = new Eetakemon();
+                        public void onResponse(Call<Eetakemon> call, Response<Eetakemon> response) {
+                            Eetakemon e = (Eetakemon) response.body();
+
+                            Log.d(tag, "Eetakemon: "+e + "Nombre: "+ e.getNombre().toLowerCase());
                             assignarLocalitzacio(e.getNombre());
                             Log.d(tag, "Mostrar Eetakemon correctamente");
                         }
@@ -309,33 +312,113 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
                 }
             });
         }
-        /*
-        //1 eetakemon nivell normal cada 20 min
-        tipo="Normal";
-        //eetakemonnormal++;
-        Service aaa =Service.retrofit.create(Service.class);
-        final Call<Eetakemon> call = aaa.eetak(tipo);
-        e = call.execute().body();
-        assignarLocalitzacio(e.getNombre());
-        if (eetakemonnormal % 4 == 0){
-            //Fer un GET i que et retorni el nom de un eetakemon de nivell normal
 
-            assignarLocalitzacio(eetakemon);
-        }
+        //1 eetakemon nivell normal cada 20 min
+        //eetakemonnormal++;
+        actbttn = (Button) findViewById(R.id.ACT);
+
+        actbttn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String tipo="Normal";
+                OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+                Retrofit.Builder builder = new Retrofit.Builder()
+                        .baseUrl("http://10.192.230.97:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
+                        .addConverterFactory(GsonConverterFactory.create());
+//
+                Retrofit retrofit =
+                        builder
+                                .client(
+                                        httpClient.build()
+                                )
+                                .build();
+
+                // Create an instance of our GitHub API interface.
+                Service acta2 = retrofit.create(Service.class);
+                Eetakemon eetakemonn = new Eetakemon(tipo);
+
+                // Create a call instance for looking up Retrofit contributors.
+                Call<Eetakemon> call2 = acta2.Eetak(eetakemonn);
+                System.out.println("***********DATOS**************************");
+
+
+                // Fetch and print a list of the contributors to the library.
+                call2.enqueue(new Callback<Eetakemon>() {
+
+
+                    //***************Comprobacion de que recoge los datos**********
+                    @Override
+                    public void onResponse(Call<Eetakemon> call, Response<Eetakemon> response) {
+                        Eetakemon e = (Eetakemon) response.body();
+
+                        Log.d(tag, "Eetakemon: "+e + "Nombre: "+ e.getNombre());
+                        assignarLocalitzacio(e.getNombre().toLowerCase());
+                        Log.d(tag, "Mostrar Eetakemon correctamente");
+                    }
+
+                    @Override
+                    public void onFailure(Call call, Throwable t) {
+                        Toast.makeText(MapsActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
+                        Log.d(tag, "ERROR al mostrar");
+                    }
+                });
+
+
+            }
+        });
 
         //1 eetakemon nivell normal cada 1 hora
-        tipo="Legendario";
-        //eetakemonlegend++;
-        Service bbb =Service.retrofit.create(Service.class);
-        final Call<Eetakemon> call2 = bbb.eetak(tipo);
-        e = call2.execute().body();
-        assignarLocalitzacio(e.getNombre());
-        if (eetakemonlegend % 12 == 0){
-            tipo="Inferior";
-            //Fer un GET i que et retorni el nom de un eetakemon de nivell legendari
+        actbttn = (Button) findViewById(R.id.ACT);
 
-            assignarLocalitzacio(eetakemon);
-        }*/
+        actbttn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String tipo="Legendario";
+                OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+                Retrofit.Builder builder = new Retrofit.Builder()
+                        .baseUrl("http://10.192.230.97:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
+                        .addConverterFactory(GsonConverterFactory.create());
+//
+                Retrofit retrofit =
+                        builder
+                                .client(
+                                        httpClient.build()
+                                )
+                                .build();
+
+                // Create an instance of our GitHub API interface.
+                Service acta3 = retrofit.create(Service.class);
+                Eetakemon eetakemonn = new Eetakemon(tipo);
+
+                // Create a call instance for looking up Retrofit contributors.
+                Call<Eetakemon> call3 = acta3.Eetak(eetakemonn);
+                System.out.println("***********DATOS**************************");
+
+
+                // Fetch and print a list of the contributors to the library.
+                call3.enqueue(new Callback<Eetakemon>() {
+
+
+                    //***************Comprobacion de que recoge los datos**********
+                    @Override
+                    public void onResponse(Call<Eetakemon> call, Response<Eetakemon> response) {
+                        Eetakemon e = (Eetakemon) response.body();
+
+                        Log.d(tag, "Eetakemon: "+e + "Nombre: "+ e.getNombre());
+                        assignarLocalitzacio(e.getNombre().toLowerCase());
+                        Log.d(tag, "Mostrar Eetakemon correctamente");
+                    }
+
+                    @Override
+                    public void onFailure(Call call, Throwable t) {
+                        Toast.makeText(MapsActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
+                        Log.d(tag, "ERROR al mostrar");
+                    }
+                });
+
+
+            }
+        });
     }
 
     public void assignarLocalitzacio(String eetakemon){ //Al fer el get, se li haurà de passar el nom del eetakemon per pritar-lo al mapa
@@ -399,6 +482,7 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
     }
 
     public Bitmap resizeMapIcons(String iconName, int width, int height){
+        Log.d(tag, " iconName: "+iconName);
         Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(),getResources().getIdentifier(iconName, "drawable", getPackageName()));
         Bitmap resizedBitmap = Bitmap.createScaledBitmap(imageBitmap, width, height, false);
         return resizedBitmap;

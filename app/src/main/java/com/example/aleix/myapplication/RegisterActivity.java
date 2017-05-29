@@ -48,7 +48,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
                 Retrofit.Builder builder = new Retrofit.Builder()
-                        .baseUrl("http://10.0.2.2:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
+                        .baseUrl("http://10.192.230.97:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
                         .addConverterFactory(GsonConverterFactory.create());
 //
                 Retrofit retrofit =
