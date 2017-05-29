@@ -91,6 +91,16 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
 
         createLocationRequest();
 
+        /*mMap.setOnMarkerClickListener(new OnMarkerClickListener()
+                                      {
+
+                                          @Override
+                                          public boolean onMarkerClick(Marker arg0) {
+                                              if(arg0.getTitle().equals("MyHome")) // if marker source is clicked
+                                                  Toast.makeText(MainActivity.this, arg0.getTitle(), Toast.LENGTH_SHORT).show();// display toast
+                                              return true;
+                                          });
+*/
         Button Menu = (Button) findViewById(R.id.Menu);
 
         Menu.setOnClickListener(new View.OnClickListener() {
