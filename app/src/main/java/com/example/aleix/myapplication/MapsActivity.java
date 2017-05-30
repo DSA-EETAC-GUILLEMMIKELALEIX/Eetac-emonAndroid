@@ -91,16 +91,6 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
 
         createLocationRequest();
 
-        /*mMap.setOnMarkerClickListener(new OnMarkerClickListener()
-                                      {
-
-                                          @Override
-                                          public boolean onMarkerClick(Marker arg0) {
-                                              if(arg0.getTitle().equals("MyHome")) // if marker source is clicked
-                                                  Toast.makeText(MainActivity.this, arg0.getTitle(), Toast.LENGTH_SHORT).show();// display toast
-                                              return true;
-                                          });
-*/
         Button Menu = (Button) findViewById(R.id.Menu);
 
         Menu.setOnClickListener(new View.OnClickListener() {
@@ -111,6 +101,21 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
             }
         });
     }
+
+/*
+
+[
+{id: x
+ type: y,
+ name: '',
+ geo: {
+     lat: l,
+     long: t
+     }
+
+]
+
+ */
 
 
     /**
@@ -338,7 +343,7 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
                 Eetakemon eetakemonn = new Eetakemon(tipo);
 
                 // Create a call instance for looking up Retrofit contributors.
-                Call<Eetakemon> call2 = acta2.Eetak(eetakemonn);
+                Call<Eetakemon> call2 = acta2.Eetak2(eetakemonn);
                 System.out.println("***********DATOS**************************");
 
 
@@ -391,7 +396,7 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
                 Eetakemon eetakemonn = new Eetakemon(tipo);
 
                 // Create a call instance for looking up Retrofit contributors.
-                Call<Eetakemon> call3 = acta3.Eetak(eetakemonn);
+                Call<Eetakemon> call3 = acta3.Eetak3(eetakemonn);
                 System.out.println("***********DATOS**************************");
 
 
@@ -421,7 +426,7 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
         });
     }
 
-    public void assignarLocalitzacio(String eetakemon){ //Al fer el get, se li haurà de passar el nom del eetakemon per pritar-lo al mapa
+    public void assignarLocalitzacio(final String eetakemon){ //Al fer el get, se li haurà de passar el nom del eetakemon per pritar-lo al mapa
 
         LatLng aa = new LatLng(41.27539318720677, 1.9851908683449437); //Biblioteca
         LatLng bb = new LatLng(41.274566700768275, 1.9851908683449437);//Residencia
@@ -438,47 +443,74 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
         int n = rand.nextInt(9);
 
         if (n==0){
-            mMap.addMarker(new MarkerOptions()
+
+            Marker m1 = mMap.addMarker(new MarkerOptions()
                     .position(aa)
                     .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
+            m1.setTag(eetakemon);
         }
         if (n==1){
-            mMap.addMarker(new MarkerOptions()
+            Marker m1 = mMap.addMarker(new MarkerOptions()
                     .position(bb)
                     .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
+            m1.setTag(eetakemon);
         }if (n==2){
-            mMap.addMarker(new MarkerOptions()
+            Marker m1 = mMap.addMarker(new MarkerOptions()
                     .position(cc)
                     .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
+            m1.setTag(eetakemon);
         }if (n==3){
-            mMap.addMarker(new MarkerOptions()
+            Marker m1 = mMap.addMarker(new MarkerOptions()
                     .position(dd)
                     .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
+            m1.setTag(eetakemon);
         }if (n==4){
-            mMap.addMarker(new MarkerOptions()
+            Marker m1 = mMap.addMarker(new MarkerOptions()
                     .position(ee)
                     .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
+            m1.setTag(eetakemon);
         }if (n==5){
-            mMap.addMarker(new MarkerOptions()
+            Marker m1 = mMap.addMarker(new MarkerOptions()
                     .position(ff)
                     .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
+            m1.setTag(eetakemon);
         }if (n==6){
-            mMap.addMarker(new MarkerOptions()
+            Marker m1 = mMap.addMarker(new MarkerOptions()
                     .position(gg)
                     .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
+            m1.setTag(eetakemon);
         }if (n==7){
-            mMap.addMarker(new MarkerOptions()
+            Marker m1 = mMap.addMarker(new MarkerOptions()
                     .position(hh)
                     .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
+            m1.setTag(eetakemon);
         }if (n==8){
-            mMap.addMarker(new MarkerOptions()
+            Marker m1 = mMap.addMarker(new MarkerOptions()
                     .position(ii)
                     .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
+            m1.setTag(eetakemon);
         }if (n==9){
-            mMap.addMarker(new MarkerOptions()
+            Marker m1 = mMap.addMarker(new MarkerOptions()
                     .position(jj)
                     .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
+            m1.setTag(eetakemon);
         }
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener()
+        {
+            @Override
+            public boolean onMarkerClick(Marker arg0) {
+                Log.d(tag, "Marker "+ arg0.getTag());
+                if (arg0.getTag().equals("m1")) Log.d(tag, "Marker "+ arg0.getTag()+ "seleccionat!!");
+
+                Intent intent = new Intent(MapsActivity.this,QuestionActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("stuff",eetakemon);
+                intent.putExtras(bundle);
+                startActivity(intent);
+                return false;
+            }
+
+        });
     }
 
     public Bitmap resizeMapIcons(String iconName, int width, int height){

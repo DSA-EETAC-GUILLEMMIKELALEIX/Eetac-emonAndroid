@@ -3,6 +3,8 @@ package com.example.aleix.myapplication;
 import com.example.aleix.myapplication.Entity.Eetakemon;
 import com.example.aleix.myapplication.Entity.User;
 
+import java.util.List;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -31,10 +33,17 @@ interface Service {
 
     @POST("/EetakemonGo/Eetakemon/Tipo")
     Call<Eetakemon> Eetak(@Body Eetakemon eetak);
+    @POST("/EetakemonGo/Eetakemon/Tipo")
+    Call<Eetakemon> Eetak2(@Body Eetakemon eetak);
+    @POST("/EetakemonGo/Eetakemon/Tipo")
+    Call<Eetakemon> Eetak3(@Body Eetakemon eetak);
 
     @POST("/EetakemonGo/User/LoginApp")
     Call<User> Login(@Body User usuario);
 
     @POST("/EetakemonGo/User/RegisterApp")
     Call<User> Register(@Body User usuario);
+
+    @GET("/EetakemonGo/Eetakemon/ListApp")
+    Call<List<Eetakemon>> Listar();
 }

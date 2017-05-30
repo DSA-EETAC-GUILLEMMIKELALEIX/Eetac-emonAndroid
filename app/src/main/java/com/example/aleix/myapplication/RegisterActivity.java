@@ -50,7 +50,7 @@ public class RegisterActivity extends AppCompatActivity {
                 Retrofit.Builder builder = new Retrofit.Builder()
                         .baseUrl("http://10.192.230.97:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
                         .addConverterFactory(GsonConverterFactory.create());
-//
+
                 Retrofit retrofit =
                         builder
                                 .client(
