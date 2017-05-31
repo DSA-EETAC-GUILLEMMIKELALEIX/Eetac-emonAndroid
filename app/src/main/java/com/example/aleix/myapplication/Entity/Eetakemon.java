@@ -1,11 +1,13 @@
 package com.example.aleix.myapplication.Entity;
 
+import java.io.Serializable;
+
 /**
  * Created by aleix on 22/05/2017.
  */
 
 // Clase que define y permite crear objetos Eetakemon
-public class Eetakemon{
+public class Eetakemon implements Serializable{
     private int id;
     private String nombre;
     private int nivel;

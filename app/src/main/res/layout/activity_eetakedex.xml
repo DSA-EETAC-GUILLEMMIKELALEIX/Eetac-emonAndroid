@@ -9,7 +9,7 @@
     <ListView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:id="@+id/list"
+        android:id="@+id/listV"
         tools:layout_constraintTop_creator="1"
         tools:layout_constraintRight_creator="1"
         tools:layout_constraintBottom_creator="1"
@@ -35,5 +35,6 @@
         tools:layout_constraintLeft_creator="1"
         android:layout_marginBottom="16dp"
         app:layout_constraintLeft_toLeftOf="parent" />
+
 
 </android.support.constraint.ConstraintLayout>

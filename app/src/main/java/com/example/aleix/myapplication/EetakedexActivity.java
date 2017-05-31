@@ -1,6 +1,7 @@
 package com.example.aleix.myapplication;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,7 +16,11 @@ import android.widget.Toast;
 
 import com.example.aleix.myapplication.Entity.Eetakemon;
 
+import org.json.JSONException;
+
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -29,8 +34,9 @@ public class EetakedexActivity extends AppCompatActivity {
 
     private Button actbttn;
     final String tag = "MAPACT";
-    final ArrayList<Eetakemon> aa = new ArrayList<Eetakemon>();
-
+    public String name;
+    private List<String> l;
+    private ListView lv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +87,14 @@ public class EetakedexActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(),((TextView) view).getText(), Toast.LENGTH_SHORT).show();
                             }
                         });*/
+                        lv = (ListView) findViewById(R.id.listV);
+                        l = new ArrayList<>();
+                        for (int j=0; j < e.size(); j++){
+                            String item = e.get(j).toString();
+                            l.add (item);
+                        }
+                        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(EetakedexActivity.this, android.R.layout.simple_list_item_1, l);
+                        lv.setAdapter(arrayAdapter);
 
 
                         for (Eetakemon etk: e) {
@@ -90,19 +104,21 @@ public class EetakedexActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onFailure(Call call, Throwable t) {
-                        Toast.makeText(EetakedexActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
-                        Log.d(tag, "ERROR al mostrar");
+                    public void onFailure(Call<List<Eetakemon>> call, Throwable t) {
+
                     }
-                });
+
 
                 /*@Override
                 protected void onListItemClick(ListView l, View v, int position, long id){
                     String selectedValue = (String) getListAdapter().getItem(position);
                     Toast.makeText(this, selectedValue, Toast.LENGTH_SHORT).show();
                 }
+
 */
-            }
-        });
+
+            });
+        }
+    });
     }
 }
