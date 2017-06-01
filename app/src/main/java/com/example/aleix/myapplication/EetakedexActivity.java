@@ -1,6 +1,7 @@
 package com.example.aleix.myapplication;
 
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -77,7 +78,17 @@ public class EetakedexActivity extends AppCompatActivity {
                         Log.d(tag, "CALL:onResponse ***********DATOS**************************");
                         List<Eetakemon> e = (List<Eetakemon>) response.body();
 
-                        /*setListAdapter( new ArrayAdapter<Eetakemon>(this,R.layout.list, e));
+                        final Context context = EetakedexActivity.this;
+
+                        // Create adapter
+                        EetakemonAdapter adapter = new EetakemonAdapter(EetakedexActivity.this, e);
+
+                        Log.d(tag, "Adapter creado");
+                        // Create list view
+                        lv = (ListView) findViewById(R.id.listV);
+                        lv.setAdapter(adapter);
+
+                        /*setListAdapter( new ArrayAdapter<Eetakemon>(EetakedexActivity.this,R.layout.list, e));
                         ListView lisv = getListView();
                         lisv.setTextFilterEnabled(true);
 
@@ -86,7 +97,7 @@ public class EetakedexActivity extends AppCompatActivity {
                                                     int position, long id){
                                 Toast.makeText(getApplicationContext(),((TextView) view).getText(), Toast.LENGTH_SHORT).show();
                             }
-                        });*/
+                        });
                         lv = (ListView) findViewById(R.id.listV);
                         l = new ArrayList<>();
                         for (int j=0; j < e.size(); j++){
@@ -94,7 +105,7 @@ public class EetakedexActivity extends AppCompatActivity {
                             l.add (item);
                         }
                         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(EetakedexActivity.this, android.R.layout.simple_list_item_1, l);
-                        lv.setAdapter(arrayAdapter);
+                        lv.setAdapter(arrayAdapter);*/
 
 
                         for (Eetakemon etk: e) {
