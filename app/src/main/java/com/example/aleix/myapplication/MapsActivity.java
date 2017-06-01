@@ -84,6 +84,8 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+
+
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -136,13 +138,7 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
 
             eetakemons();
 
-        /*Timer myTimer = new Timer();
-        myTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                eetakemons(); //Probar funcio simple
-            }
-        }, 0, 300000);*/
+
     }
 
     protected void createLocationRequest() {
@@ -259,12 +255,12 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
     }
 
     private void eetakemons(){
-        mMap.clear();
         actbttn = (Button) findViewById(R.id.ACT);
 
         actbttn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mMap.clear();
                 OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
                 Retrofit.Builder builder = new Retrofit.Builder()
                         .baseUrl("http://192.168.1.35:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
