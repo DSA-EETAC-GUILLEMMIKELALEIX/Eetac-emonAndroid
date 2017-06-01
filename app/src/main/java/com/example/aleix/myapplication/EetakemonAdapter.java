@@ -93,8 +93,6 @@ public class EetakemonAdapter extends BaseAdapter{
         titleTextView.setText(eetak.getId() + ": " + eetak.getNombre());
         subtitleTextView.setText(eetak.getTipo());
 
-        Log.d(tag, "CCCCC");
-
         if(eetak.getNombre().equals("Bernorlax")) {
             thumbnailImageView.setImageResource(R.drawable.bernorlax);
         }

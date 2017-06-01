@@ -48,6 +48,7 @@ import org.json.JSONObject;
 
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -259,76 +260,14 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
 
     private void eetakemons(){
         mMap.clear();
-        String eetakemon = "bernorlax";
-        assignarLocalitzacio(eetakemon);
-        int i;
-
-        //3 eetakemons nivell inferior
-        for(i=0; i<3; i++){
-            actbttn = (Button) findViewById(R.id.ACT);
-
-            actbttn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String tipo="Inferior";
-                    OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-                    Retrofit.Builder builder = new Retrofit.Builder()
-                            .baseUrl("http://10.192.230.97:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
-                            .addConverterFactory(GsonConverterFactory.create());
-//
-                    Retrofit retrofit =
-                            builder
-                                    .client(
-                                            httpClient.build()
-                                    )
-                                    .build();
-
-                    // Create an instance of our GitHub API interface.
-                    Service acta = retrofit.create(Service.class);
-                    Eetakemon eetakemonn = new Eetakemon(tipo);
-
-                    // Create a call instance for looking up Retrofit contributors.
-                    Call<Eetakemon> call1 = acta.Eetak(eetakemonn);
-                    System.out.println("***********DATOS**************************");
-
-
-                    // Fetch and print a list of the contributors to the library.
-                    call1.enqueue(new Callback<Eetakemon>() {
-
-
-                        //***************Comprobacion de que recoge los datos**********
-                        @Override
-                        public void onResponse(Call<Eetakemon> call, Response<Eetakemon> response) {
-                            Eetakemon e = (Eetakemon) response.body();
-
-                            Log.d(tag, "Eetakemon: "+e + "Nombre: "+ e.getNombre().toLowerCase());
-                            assignarLocalitzacio(e.getNombre());
-                            Log.d(tag, "Mostrar Eetakemon correctamente");
-                        }
-
-                        @Override
-                        public void onFailure(Call call, Throwable t) {
-                            Toast.makeText(MapsActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
-                            Log.d(tag, "ERROR al mostrar");
-                        }
-                    });
-
-
-                }
-            });
-        }
-
-        //1 eetakemon nivell normal cada 20 min
-        //eetakemonnormal++;
         actbttn = (Button) findViewById(R.id.ACT);
 
         actbttn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String tipo="Normal";
                 OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
                 Retrofit.Builder builder = new Retrofit.Builder()
-                        .baseUrl("http://10.192.230.97:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
+                        .baseUrl("http://192.168.1.35:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
                         .addConverterFactory(GsonConverterFactory.create());
 //
                 Retrofit retrofit =
@@ -339,78 +278,26 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
                                 .build();
 
                 // Create an instance of our GitHub API interface.
-                Service acta2 = retrofit.create(Service.class);
-                Eetakemon eetakemonn = new Eetakemon(tipo);
+                Service acta = retrofit.create(Service.class);
 
                 // Create a call instance for looking up Retrofit contributors.
-                Call<Eetakemon> call2 = acta2.Eetak2(eetakemonn);
+                Call<List<Eetakemon>> call1 = acta.Eetakname();
                 System.out.println("***********DATOS**************************");
 
 
                 // Fetch and print a list of the contributors to the library.
-                call2.enqueue(new Callback<Eetakemon>() {
-
-
+                call1.enqueue(new Callback<List<Eetakemon>>() {
                     //***************Comprobacion de que recoge los datos**********
                     @Override
-                    public void onResponse(Call<Eetakemon> call, Response<Eetakemon> response) {
-                        Eetakemon e = (Eetakemon) response.body();
+                    public void onResponse(Call<List<Eetakemon>> call, Response<List<Eetakemon>> response) {
+                        List<Eetakemon> e = (List<Eetakemon>) response.body();
 
-                        Log.d(tag, "Eetakemon: "+e + "Nombre: "+ e.getNombre());
-                        assignarLocalitzacio(e.getNombre().toLowerCase());
-                        Log.d(tag, "Mostrar Eetakemon correctamente");
-                    }
+                        Log.d(tag, "Eetakemon: "+e );
 
-                    @Override
-                    public void onFailure(Call call, Throwable t) {
-                        Toast.makeText(MapsActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
-                        Log.d(tag, "ERROR al mostrar");
-                    }
-                });
-
-
-            }
-        });
-
-        //1 eetakemon nivell normal cada 1 hora
-        actbttn = (Button) findViewById(R.id.ACT);
-
-        actbttn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String tipo="Legendario";
-                OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-                Retrofit.Builder builder = new Retrofit.Builder()
-                        .baseUrl("http://10.192.230.97:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
-                        .addConverterFactory(GsonConverterFactory.create());
-//
-                Retrofit retrofit =
-                        builder
-                                .client(
-                                        httpClient.build()
-                                )
-                                .build();
-
-                // Create an instance of our GitHub API interface.
-                Service acta3 = retrofit.create(Service.class);
-                Eetakemon eetakemonn = new Eetakemon(tipo);
-
-                // Create a call instance for looking up Retrofit contributors.
-                Call<Eetakemon> call3 = acta3.Eetak3(eetakemonn);
-                System.out.println("***********DATOS**************************");
-
-
-                // Fetch and print a list of the contributors to the library.
-                call3.enqueue(new Callback<Eetakemon>() {
-
-
-                    //***************Comprobacion de que recoge los datos**********
-                    @Override
-                    public void onResponse(Call<Eetakemon> call, Response<Eetakemon> response) {
-                        Eetakemon e = (Eetakemon) response.body();
-
-                        Log.d(tag, "Eetakemon: "+e + "Nombre: "+ e.getNombre());
-                        assignarLocalitzacio(e.getNombre().toLowerCase());
+                        for(int i=0;i<e.size();i++){
+                            assignarLocalitzacio(e.get(i).getNombre().toLowerCase());
+                            Log.d(tag, "Eetakemon: "+e + "Nombre: "+ e.get(i).getNombre().toLowerCase());
+                        }
                         Log.d(tag, "Mostrar Eetakemon correctamente");
                     }
 

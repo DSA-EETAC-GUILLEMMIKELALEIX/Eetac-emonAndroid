@@ -33,10 +33,6 @@ interface Service {
 
     @POST("/EetakemonGo/Eetakemon/Tipo")
     Call<Eetakemon> Eetak(@Body Eetakemon eetak);
-    @POST("/EetakemonGo/Eetakemon/Tipo")
-    Call<Eetakemon> Eetak2(@Body Eetakemon eetak);
-    @POST("/EetakemonGo/Eetakemon/Tipo")
-    Call<Eetakemon> Eetak3(@Body Eetakemon eetak);
 
     @POST("/EetakemonGo/User/LoginApp")
     Call<User> Login(@Body User usuario);
@@ -46,4 +42,8 @@ interface Service {
 
     @GET("/EetakemonGo/Eetakemon/ListApp")
     Call<List<Eetakemon>> Listar();
+
+    @GET("/EetakemonGo/Eetakemon/ListMapa")
+    Call<List<Eetakemon>> Eetakname();
+
 }

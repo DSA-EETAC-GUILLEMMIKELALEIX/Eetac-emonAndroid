@@ -6,4 +6,13 @@
     android:layout_height="match_parent"
     tools:context="com.example.aleix.myapplication.TusEetakemonsActivity">
 
+    <Button
+        android:id="@+id/ACT2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ACT"
+        android:layout_alignBaseline="@+id/Menu"
+        android:layout_alignBottom="@+id/Menu"
+        android:layout_alignParentEnd="true" />
+
 </android.support.constraint.ConstraintLayout>
