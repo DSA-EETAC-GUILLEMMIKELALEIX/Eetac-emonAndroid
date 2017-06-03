@@ -311,7 +311,7 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
 
     public void assignarLocalitzacio(final String eetakemon){ //Al fer el get, se li haurà de passar el nom del eetakemon per pritar-lo al mapa
 
-        LatLng aa = new LatLng(41.27539318720677, 1.9851908683449437); //Biblioteca
+        LatLng aa = new LatLng(41.27539318720677, 1.9851908683449437); //Bibliotecaa
         LatLng bb = new LatLng(41.274566700768275, 1.9851908683449437);//Residencia
         LatLng cc = new LatLng(41.275224665468244, 1.986177653066079); //Entrada EETAC-1
         LatLng dd = new LatLng(41.275561305325134, 1.9871539771884272);//Entrada EETAC-2
