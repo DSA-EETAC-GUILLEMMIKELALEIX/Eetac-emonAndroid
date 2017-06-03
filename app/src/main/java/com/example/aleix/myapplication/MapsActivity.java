@@ -254,7 +254,7 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
 
     private void eetakemons(){
         mMap.clear();
-        String eetakemon = "bernorlax";
+        String eetakemon = "Bernorlax";
         assignarLocalitzacio(eetakemon);
         int i;
 
