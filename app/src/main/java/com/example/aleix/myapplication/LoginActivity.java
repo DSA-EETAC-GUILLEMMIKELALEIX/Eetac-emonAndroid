@@ -62,6 +62,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     String tag = "Login";
     EditText mEmail, mPass;
     private Button login;
+    MediaPlayer mediaPlayer;
         /**
      * Id to identity READ_CONTACTS permission request.
      */
@@ -90,7 +91,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        MediaPlayer mediaPlayer;
+
         mediaPlayer = MediaPlayer.create(this,R.raw.cancion1);
         mediaPlayer.setLooping(true);
         mediaPlayer.setVolume(100,100);
@@ -130,7 +131,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                 OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
                 Retrofit.Builder builder = new Retrofit.Builder()
-                        .baseUrl("http://10.0.2.2:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
+                        .baseUrl("http://192.168.1.35:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
                         .addConverterFactory(GsonConverterFactory.create());
 //
                 Retrofit retrofit =
@@ -156,6 +157,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     @Override
                     public void onResponse(Call call, Response response) {
                         User contributor = (User) response.body();
+                        mediaPlayer.stop();
                         Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
                         startActivity(intent);
                         Log.d(tag, "Logueado correctamente");

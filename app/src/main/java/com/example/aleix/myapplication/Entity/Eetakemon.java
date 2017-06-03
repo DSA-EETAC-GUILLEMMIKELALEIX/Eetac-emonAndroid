@@ -1,11 +1,22 @@
 package com.example.aleix.myapplication.Entity;
 
+import android.content.Context;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.InputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by aleix on 22/05/2017.
  */
 
 // Clase que define y permite crear objetos Eetakemon
-public class Eetakemon{
+public class Eetakemon implements Serializable{
     private int id;
     private String nombre;
     private int nivel;
@@ -84,4 +95,24 @@ public class Eetakemon{
     public String toString() {
         return "Eetakemon [Id = "+id+", nombre=" + nombre + ", tipo=" + tipo + /*", foto=" + foto +*/ ", nivel=" + nivel+"]";
     }
+
+    private static String loadJsonFromAsset(String filename, Context context) {
+        String json = null;
+
+        try {
+            InputStream is = context.getAssets().open(filename);
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        }
+        catch (java.io.IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+
+        return json;
+    }
+
 }

@@ -48,6 +48,7 @@ import org.json.JSONObject;
 
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -83,6 +84,8 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+
+
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -91,16 +94,6 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
 
         createLocationRequest();
 
-        /*mMap.setOnMarkerClickListener(new OnMarkerClickListener()
-                                      {
-
-                                          @Override
-                                          public boolean onMarkerClick(Marker arg0) {
-                                              if(arg0.getTitle().equals("MyHome")) // if marker source is clicked
-                                                  Toast.makeText(MainActivity.this, arg0.getTitle(), Toast.LENGTH_SHORT).show();// display toast
-                                              return true;
-                                          });
-*/
         Button Menu = (Button) findViewById(R.id.Menu);
 
         Menu.setOnClickListener(new View.OnClickListener() {
@@ -111,6 +104,21 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
             }
         });
     }
+
+/*
+
+[
+{id: x
+ type: y,
+ name: '',
+ geo: {
+     lat: l,
+     long: t
+     }
+
+]
+
+ */
 
 
     /**
@@ -130,13 +138,7 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
 
             eetakemons();
 
-        /*Timer myTimer = new Timer();
-        myTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                eetakemons(); //Probar funcio simple
-            }
-        }, 0, 300000);*/
+
     }
 
     protected void createLocationRequest() {
@@ -253,77 +255,15 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
     }
 
     private void eetakemons(){
-        mMap.clear();
-        String eetakemon = "Bernorlax";
-        assignarLocalitzacio(eetakemon);
-        int i;
-
-        //3 eetakemons nivell inferior
-        for(i=0; i<3; i++){
-            actbttn = (Button) findViewById(R.id.ACT);
-
-            actbttn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String tipo="Inferior";
-                    OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-                    Retrofit.Builder builder = new Retrofit.Builder()
-                            .baseUrl("http://10.192.230.97:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
-                            .addConverterFactory(GsonConverterFactory.create());
-//
-                    Retrofit retrofit =
-                            builder
-                                    .client(
-                                            httpClient.build()
-                                    )
-                                    .build();
-
-                    // Create an instance of our GitHub API interface.
-                    Service acta = retrofit.create(Service.class);
-                    Eetakemon eetakemonn = new Eetakemon(tipo);
-
-                    // Create a call instance for looking up Retrofit contributors.
-                    Call<Eetakemon> call1 = acta.Eetak(eetakemonn);
-                    System.out.println("***********DATOS**************************");
-
-
-                    // Fetch and print a list of the contributors to the library.
-                    call1.enqueue(new Callback<Eetakemon>() {
-
-
-                        //***************Comprobacion de que recoge los datos**********
-                        @Override
-                        public void onResponse(Call<Eetakemon> call, Response<Eetakemon> response) {
-                            Eetakemon e = (Eetakemon) response.body();
-
-                            Log.d(tag, "Eetakemon: "+e + "Nombre: "+ e.getNombre().toLowerCase());
-                            assignarLocalitzacio(e.getNombre());
-                            Log.d(tag, "Mostrar Eetakemon correctamente");
-                        }
-
-                        @Override
-                        public void onFailure(Call call, Throwable t) {
-                            Toast.makeText(MapsActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
-                            Log.d(tag, "ERROR al mostrar");
-                        }
-                    });
-
-
-                }
-            });
-        }
-
-        //1 eetakemon nivell normal cada 20 min
-        //eetakemonnormal++;
         actbttn = (Button) findViewById(R.id.ACT);
 
         actbttn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String tipo="Normal";
+                mMap.clear();
                 OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
                 Retrofit.Builder builder = new Retrofit.Builder()
-                        .baseUrl("http://10.192.230.97:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
+                        .baseUrl("http://192.168.1.35:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
                         .addConverterFactory(GsonConverterFactory.create());
 //
                 Retrofit retrofit =
@@ -334,78 +274,26 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
                                 .build();
 
                 // Create an instance of our GitHub API interface.
-                Service acta2 = retrofit.create(Service.class);
-                Eetakemon eetakemonn = new Eetakemon(tipo);
+                Service acta = retrofit.create(Service.class);
 
                 // Create a call instance for looking up Retrofit contributors.
-                Call<Eetakemon> call2 = acta2.Eetak(eetakemonn);
+                Call<List<Eetakemon>> call1 = acta.Eetakname();
                 System.out.println("***********DATOS**************************");
 
 
                 // Fetch and print a list of the contributors to the library.
-                call2.enqueue(new Callback<Eetakemon>() {
-
-
+                call1.enqueue(new Callback<List<Eetakemon>>() {
                     //***************Comprobacion de que recoge los datos**********
                     @Override
-                    public void onResponse(Call<Eetakemon> call, Response<Eetakemon> response) {
-                        Eetakemon e = (Eetakemon) response.body();
+                    public void onResponse(Call<List<Eetakemon>> call, Response<List<Eetakemon>> response) {
+                        List<Eetakemon> e = (List<Eetakemon>) response.body();
 
-                        Log.d(tag, "Eetakemon: "+e + "Nombre: "+ e.getNombre());
-                        assignarLocalitzacio(e.getNombre().toLowerCase());
-                        Log.d(tag, "Mostrar Eetakemon correctamente");
-                    }
+                        Log.d(tag, "Eetakemon: "+e );
 
-                    @Override
-                    public void onFailure(Call call, Throwable t) {
-                        Toast.makeText(MapsActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
-                        Log.d(tag, "ERROR al mostrar");
-                    }
-                });
-
-
-            }
-        });
-
-        //1 eetakemon nivell normal cada 1 hora
-        actbttn = (Button) findViewById(R.id.ACT);
-
-        actbttn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String tipo="Legendario";
-                OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-                Retrofit.Builder builder = new Retrofit.Builder()
-                        .baseUrl("http://10.192.230.97:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
-                        .addConverterFactory(GsonConverterFactory.create());
-//
-                Retrofit retrofit =
-                        builder
-                                .client(
-                                        httpClient.build()
-                                )
-                                .build();
-
-                // Create an instance of our GitHub API interface.
-                Service acta3 = retrofit.create(Service.class);
-                Eetakemon eetakemonn = new Eetakemon(tipo);
-
-                // Create a call instance for looking up Retrofit contributors.
-                Call<Eetakemon> call3 = acta3.Eetak(eetakemonn);
-                System.out.println("***********DATOS**************************");
-
-
-                // Fetch and print a list of the contributors to the library.
-                call3.enqueue(new Callback<Eetakemon>() {
-
-
-                    //***************Comprobacion de que recoge los datos**********
-                    @Override
-                    public void onResponse(Call<Eetakemon> call, Response<Eetakemon> response) {
-                        Eetakemon e = (Eetakemon) response.body();
-
-                        Log.d(tag, "Eetakemon: "+e + "Nombre: "+ e.getNombre());
-                        assignarLocalitzacio(e.getNombre().toLowerCase());
+                        for(int i=0;i<e.size();i++){
+                            assignarLocalitzacio(e.get(i).getNombre().toLowerCase());
+                            Log.d(tag, "Eetakemon: "+e + "Nombre: "+ e.get(i).getNombre().toLowerCase());
+                        }
                         Log.d(tag, "Mostrar Eetakemon correctamente");
                     }
 
@@ -421,7 +309,7 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
         });
     }
 
-    public void assignarLocalitzacio(String eetakemon){ //Al fer el get, se li haurà de passar el nom del eetakemon per pritar-lo al mapa
+    public void assignarLocalitzacio(final String eetakemon){ //Al fer el get, se li haurà de passar el nom del eetakemon per pritar-lo al mapa
 
         LatLng aa = new LatLng(41.27539318720677, 1.9851908683449437); //Biblioteca
         LatLng bb = new LatLng(41.274566700768275, 1.9851908683449437);//Residencia
@@ -438,47 +326,74 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
         int n = rand.nextInt(9);
 
         if (n==0){
-            mMap.addMarker(new MarkerOptions()
+
+            Marker m1 = mMap.addMarker(new MarkerOptions()
                     .position(aa)
                     .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
+            m1.setTag(eetakemon);
         }
         if (n==1){
-            mMap.addMarker(new MarkerOptions()
+            Marker m1 = mMap.addMarker(new MarkerOptions()
                     .position(bb)
                     .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
+            m1.setTag(eetakemon);
         }if (n==2){
-            mMap.addMarker(new MarkerOptions()
+            Marker m1 = mMap.addMarker(new MarkerOptions()
                     .position(cc)
                     .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
+            m1.setTag(eetakemon);
         }if (n==3){
-            mMap.addMarker(new MarkerOptions()
+            Marker m1 = mMap.addMarker(new MarkerOptions()
                     .position(dd)
                     .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
+            m1.setTag(eetakemon);
         }if (n==4){
-            mMap.addMarker(new MarkerOptions()
+            Marker m1 = mMap.addMarker(new MarkerOptions()
                     .position(ee)
                     .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
+            m1.setTag(eetakemon);
         }if (n==5){
-            mMap.addMarker(new MarkerOptions()
+            Marker m1 = mMap.addMarker(new MarkerOptions()
                     .position(ff)
                     .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
+            m1.setTag(eetakemon);
         }if (n==6){
-            mMap.addMarker(new MarkerOptions()
+            Marker m1 = mMap.addMarker(new MarkerOptions()
                     .position(gg)
                     .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
+            m1.setTag(eetakemon);
         }if (n==7){
-            mMap.addMarker(new MarkerOptions()
+            Marker m1 = mMap.addMarker(new MarkerOptions()
                     .position(hh)
                     .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
+            m1.setTag(eetakemon);
         }if (n==8){
-            mMap.addMarker(new MarkerOptions()
+            Marker m1 = mMap.addMarker(new MarkerOptions()
                     .position(ii)
                     .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
+            m1.setTag(eetakemon);
         }if (n==9){
-            mMap.addMarker(new MarkerOptions()
+            Marker m1 = mMap.addMarker(new MarkerOptions()
                     .position(jj)
                     .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
+            m1.setTag(eetakemon);
         }
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener()
+        {
+            @Override
+            public boolean onMarkerClick(Marker arg0) {
+                Log.d(tag, "Marker "+ arg0.getTag());
+                if (arg0.getTag().equals("m1")) Log.d(tag, "Marker "+ arg0.getTag()+ "seleccionat!!");
+
+                Intent intent = new Intent(MapsActivity.this,QuestionActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("stuff",eetakemon);
+                intent.putExtras(bundle);
+                startActivity(intent);
+                return false;
+            }
+
+        });
     }
 
     public Bitmap resizeMapIcons(String iconName, int width, int height){
