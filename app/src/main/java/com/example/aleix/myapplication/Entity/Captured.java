@@ -2,26 +2,15 @@ package com.example.aleix.myapplication.Entity;
 
 
 public class Captured {
-    int idEetakemon;
     String name;
     int level;
 
-    public Captured(int idEetakemon, String name, int level) {
-        this.idEetakemon=idEetakemon;
+    public Captured(String name, int level) {
         this.name=name;
         this.level=level;
     }
 
-
-
-
-    public int getIdEetakemon() {
-        return idEetakemon;
-    }
-
-    public void setIdEetakemon(int idEetakemon) {
-        this.idEetakemon = idEetakemon;
-    }
+    public Captured(){}
 
     public String getName() {
         return name;

@@ -5,9 +5,12 @@ import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.aleix.myapplication.Entity.Captured;
 import com.example.aleix.myapplication.Entity.Eetakemon;
 import com.example.aleix.myapplication.Entity.Question;
 
@@ -24,14 +27,17 @@ public class QuestionActivity extends AppCompatActivity {
 
     final String tag = "MAPACT";
 
+    Button Si = (Button) findViewById (R.id.button4);
+    Button No = (Button) findViewById (R.id.button5);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question);
 
         Bundle bundle = getIntent().getExtras();
-        String stuff1 = bundle.getString("nameExtra");
-        String stuff2 = bundle.getString("tipoExtra");
+        final String stuff1 = bundle.getString("nameExtra");
+        final String stuff2 = bundle.getString("tipoExtra");
 
         TextView mtv = (TextView) findViewById(R.id.textView2);
         mtv.setText("Eetakemon: " + stuff1.toUpperCase() +  "  Tipo: " + stuff2.toUpperCase());
@@ -62,14 +68,66 @@ public class QuestionActivity extends AppCompatActivity {
         Call<Question> call1 = acta.Pregunta(e);
         Log.d(tag, "CALL: ***********DATOS**************************");
 
+        final TextView txtview = (TextView) findViewById(R.id.textView);
 
         // Fetch and print a list of the contributors to the library.
         call1.enqueue(new Callback<Question>() {
             @Override
             public void onResponse(Call<Question> call, Response<Question> response) {
-
                 Log.d(tag, "CALL:onResponse ***********DATOS**************************");
+                final Question quest = response.body();
+                txtview.setText(quest.getQuestion());
 
+                Si.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(quest.getAnswer()==1){
+                            //Eetakemon capturado
+                            int level=0;
+                            if (stuff2.equals("Inferior")){
+                                level=1;
+                            }
+                            else if (stuff2.equals("Normal")){
+                                level=15;
+                            }
+                            else if (stuff2.equals("Legendario")){
+                                level=30;
+                            }
+                            Captured capturedEetak = new Captured();
+                            capturedEetak.setName(stuff1);
+                            capturedEetak.setLevel(level);
+
+                        }
+                        if(quest.getAnswer()==0){
+                            //Error volver al mapa y eliminar el marker
+                        }
+                    }
+                });
+
+                No.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(quest.getAnswer()==1){
+                            //Error volver al mapa y eliminar el marker
+                        }
+                        if(quest.getAnswer()==0){
+                            //Eetakemon capturado
+                            int level=0;
+                            if (stuff2.equals("Inferior")){
+                                level=1;
+                            }
+                            else if (stuff2.equals("Normal")){
+                                level=15;
+                            }
+                            else if (stuff2.equals("Legendario")){
+                                level=30;
+                            }
+                            Captured capturedEetak = new Captured();
+                            capturedEetak.setName(stuff1);
+                            capturedEetak.setLevel(level);
+                        }
+                    }
+                });
 
             }
 

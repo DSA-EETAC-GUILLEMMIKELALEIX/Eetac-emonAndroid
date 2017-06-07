@@ -41,7 +41,7 @@ interface Service {
     @GET("/EetakemonGo/Eetakemon/ListMapa")
     Call<List<Capturar>> Eetakname();
 
-    @POST("/EetakemonGo/Eetakemon/Tipo")
+    @POST("/EetakemonGo/Eetakemon/Question")
     Call<Question> Pregunta(@Body Eetakemon eetak);
 
 
