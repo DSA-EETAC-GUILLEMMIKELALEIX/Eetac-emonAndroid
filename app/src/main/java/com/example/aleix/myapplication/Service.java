@@ -2,6 +2,7 @@ package com.example.aleix.myapplication;
 
 import com.example.aleix.myapplication.Entity.Capturar;
 import com.example.aleix.myapplication.Entity.Eetakemon;
+import com.example.aleix.myapplication.Entity.Question;
 import com.example.aleix.myapplication.Entity.User;
 
 import java.util.List;
@@ -22,16 +23,6 @@ import retrofit2.http.Path;
 
 interface Service {
 
-    /* HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
-    OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build();
-
-
-
-    public static final Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:8081/EetakemonGo/")
-            .addConverterFactory(GsonConverterFactory.create()).client(okHttpClient)
-            .build();*/
-
     @POST("/EetakemonGo/Eetakemon/Tipo")
     Call<Eetakemon> Eetak(@Body Eetakemon eetak);
 
@@ -49,5 +40,9 @@ interface Service {
 
     @GET("/EetakemonGo/Eetakemon/ListMapa")
     Call<List<Capturar>> Eetakname();
+
+    @POST("/EetakemonGo/Eetakemon/Tipo")
+    Call<Question> Pregunta(@Body Eetakemon eetak);
+
 
 }

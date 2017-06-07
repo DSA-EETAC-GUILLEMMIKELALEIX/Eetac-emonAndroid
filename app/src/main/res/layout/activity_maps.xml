@@ -29,13 +29,4 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
-    <Button
-        android:id="@+id/ACT"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ACT"
-        android:layout_alignBaseline="@+id/Menu"
-        android:layout_alignBottom="@+id/Menu"
-        android:layout_alignParentEnd="true" />
-
 </RelativeLayout>

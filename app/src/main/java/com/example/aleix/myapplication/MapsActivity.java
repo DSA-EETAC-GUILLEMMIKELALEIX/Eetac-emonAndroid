@@ -256,56 +256,47 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
     }
 
     private void eetakemons(){
-        actbttn = (Button) findViewById(R.id.ACT);
-
-        actbttn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mMap.clear();
-                OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-                Retrofit.Builder builder = new Retrofit.Builder()
-                        .baseUrl("http://10.0.2.2:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
-                        .addConverterFactory(GsonConverterFactory.create());
+        mMap.clear();
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl("http://10.0.2.2:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
+                .addConverterFactory(GsonConverterFactory.create());
 //
-                Retrofit retrofit =
-                        builder
-                                .client(
-                                        httpClient.build()
-                                )
-                                .build();
+        Retrofit retrofit =
+                builder
+                        .client(
+                                httpClient.build()
+                        )
+                        .build();
 
-                // Create an instance of our GitHub API interface.
-                Service acta = retrofit.create(Service.class);
+        // Create an instance of our GitHub API interface.
+        Service acta = retrofit.create(Service.class);
 
-                // Create a call instance for looking up Retrofit contributors.
-                Call<List<Capturar>> call1 = acta.Eetakname();
-                System.out.println("***********DATOS**************************");
-
-
-                // Fetch and print a list of the contributors to the library.
-                call1.enqueue(new Callback<List<Capturar>>() {
-                    //***************Comprobacion de que recoge los datos**********
-                    @Override
-                    public void onResponse(Call<List<Capturar>> call, Response<List<Capturar>> response) {
-                        List<Capturar> captura = (List<Capturar>) response.body();
-
-                        Log.d(tag, "Lista size:" + captura.size());
-
-                        for(int i=0;i<captura.size();i++){
-                            assignarLocalitzacio(captura.get(i).getNombre().toLowerCase(),captura.get(i).getTipo(),captura.get(i).getLatLong().getLatitud(), captura.get(i).getLatLong().getLongitud());
-                            Log.d(tag, "Eetakemon: "+captura + "Nombre: "+ captura.get(i).getNombre().toLowerCase()+"Coord:"+captura.get(i).getLatLong());
-                        }
-                        Log.d(tag, "Mostrar Eetakemon correctamente");
-                    }
-
-                    @Override
-                    public void onFailure(Call call, Throwable t) {
-                        Toast.makeText(MapsActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
-                        Log.d(tag, "ERROR al mostrar");
-                    }
-                });
+        // Create a call instance for looking up Retrofit contributors.
+        Call<List<Capturar>> call1 = acta.Eetakname();
+        System.out.println("***********DATOS**************************");
 
 
+        // Fetch and print a list of the contributors to the library.
+        call1.enqueue(new Callback<List<Capturar>>() {
+            //***************Comprobacion de que recoge los datos**********
+            @Override
+            public void onResponse(Call<List<Capturar>> call, Response<List<Capturar>> response) {
+                List<Capturar> captura = (List<Capturar>) response.body();
+
+                Log.d(tag, "Lista size:" + captura.size());
+
+                for(int i=0;i<captura.size();i++){
+                    assignarLocalitzacio(captura.get(i).getNombre().toLowerCase(),captura.get(i).getTipo(),captura.get(i).getLatLong().getLatitud(), captura.get(i).getLatLong().getLongitud());
+                    Log.d(tag, "Eetakemon: "+captura + "Nombre: "+ captura.get(i).getNombre().toLowerCase()+"Coord:"+captura.get(i).getLatLong());
+                }
+                Log.d(tag, "Mostrar Eetakemon correctamente");
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                Toast.makeText(MapsActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
+                Log.d(tag, "ERROR al mostrar");
             }
         });
     }
@@ -315,7 +306,7 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
 
         Log.d(tag, "Loc:"+lat+","+longi);
         LatLng loc = new LatLng(lat, longi);
-        Marker m1 = mMap.addMarker(new MarkerOptions()
+        final Marker m1 = mMap.addMarker(new MarkerOptions()
                     .position(loc)
                     .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakname,150,150))));
             m1.setTag(eetakname);
@@ -329,7 +320,7 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
 
                 Intent intent = new Intent(MapsActivity.this,QuestionActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("nameExtra",eetakname);
+                bundle.putString("nameExtra",m1.getTag().toString());
                 bundle.putString("tipoExtra",eetaktipo);
                 intent.putExtras(bundle);
                 startActivity(intent);
