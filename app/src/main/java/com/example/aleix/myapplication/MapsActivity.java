@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.aleix.myapplication.Entity.Capturar;
 import com.example.aleix.myapplication.Entity.Eetakemon;
 import com.example.aleix.myapplication.Entity.User;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -263,7 +264,7 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
                 mMap.clear();
                 OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
                 Retrofit.Builder builder = new Retrofit.Builder()
-                        .baseUrl("http://192.168.1.35:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
+                        .baseUrl("http://10.0.2.2:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
                         .addConverterFactory(GsonConverterFactory.create());
 //
                 Retrofit retrofit =
@@ -277,22 +278,22 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
                 Service acta = retrofit.create(Service.class);
 
                 // Create a call instance for looking up Retrofit contributors.
-                Call<List<Eetakemon>> call1 = acta.Eetakname();
+                Call<List<Capturar>> call1 = acta.Eetakname();
                 System.out.println("***********DATOS**************************");
 
 
                 // Fetch and print a list of the contributors to the library.
-                call1.enqueue(new Callback<List<Eetakemon>>() {
+                call1.enqueue(new Callback<List<Capturar>>() {
                     //***************Comprobacion de que recoge los datos**********
                     @Override
-                    public void onResponse(Call<List<Eetakemon>> call, Response<List<Eetakemon>> response) {
-                        List<Eetakemon> e = (List<Eetakemon>) response.body();
+                    public void onResponse(Call<List<Capturar>> call, Response<List<Capturar>> response) {
+                        List<Capturar> captura = (List<Capturar>) response.body();
 
-                        Log.d(tag, "Eetakemon: "+e );
+                        Log.d(tag, "Lista size:" + captura.size());
 
-                        for(int i=0;i<e.size();i++){
-                            assignarLocalitzacio(e.get(i).getNombre().toLowerCase());
-                            Log.d(tag, "Eetakemon: "+e + "Nombre: "+ e.get(i).getNombre().toLowerCase());
+                        for(int i=0;i<captura.size();i++){
+                            assignarLocalitzacio(captura.get(i).getNombre().toLowerCase(),captura.get(i).getTipo(),captura.get(i).getLatLong().getLatitud(), captura.get(i).getLatLong().getLongitud());
+                            Log.d(tag, "Eetakemon: "+captura + "Nombre: "+ captura.get(i).getNombre().toLowerCase()+"Coord:"+captura.get(i).getLatLong());
                         }
                         Log.d(tag, "Mostrar Eetakemon correctamente");
                     }
@@ -309,75 +310,16 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
         });
     }
 
-    public void assignarLocalitzacio(final String eetakemon){ //Al fer el get, se li haurà de passar el nom del eetakemon per pritar-lo al mapa
 
-        LatLng aa = new LatLng(41.27539318720677, 1.9851908683449437); //Biblioteca
-        LatLng bb = new LatLng(41.274566700768275, 1.9851908683449437);//Residencia
-        LatLng cc = new LatLng(41.275224665468244, 1.986177653066079); //Entrada EETAC-1
-        LatLng dd = new LatLng(41.275561305325134, 1.9871539771884272);//Entrada EETAC-2
-        LatLng ee = new LatLng(41.27564395319903, 1.9865638912051509); //Entrada ESAB
-        LatLng ff = new LatLng(41.27557178752102, 1.9858227968461506); //Canasta Basquet
-        LatLng gg = new LatLng(41.275515250643224, 1.9840220282936217); //Pont
-        LatLng hh = new LatLng(41.27581166751877, 1.9877861738041247); //Edifici professors
-        LatLng ii = new LatLng(41.27523514765666, 1.9881053566871287); //Entrada UOC
-        LatLng jj = new LatLng(41.275731035685105, 1.989977538569292); //Parking
+    public void assignarLocalitzacio(final String eetakname, final String eetaktipo, final double lat, final double longi){ //Al fer el get, se li haurà de passar el nom del eetakemon per pritar-lo al mapa
 
-        Random rand = new Random();
-        int n = rand.nextInt(9);
+        Log.d(tag, "Loc:"+lat+","+longi);
+        LatLng loc = new LatLng(lat, longi);
+        Marker m1 = mMap.addMarker(new MarkerOptions()
+                    .position(loc)
+                    .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakname,150,150))));
+            m1.setTag(eetakname);
 
-        if (n==0){
-
-            Marker m1 = mMap.addMarker(new MarkerOptions()
-                    .position(aa)
-                    .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
-            m1.setTag(eetakemon);
-        }
-        if (n==1){
-            Marker m1 = mMap.addMarker(new MarkerOptions()
-                    .position(bb)
-                    .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
-            m1.setTag(eetakemon);
-        }if (n==2){
-            Marker m1 = mMap.addMarker(new MarkerOptions()
-                    .position(cc)
-                    .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
-            m1.setTag(eetakemon);
-        }if (n==3){
-            Marker m1 = mMap.addMarker(new MarkerOptions()
-                    .position(dd)
-                    .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
-            m1.setTag(eetakemon);
-        }if (n==4){
-            Marker m1 = mMap.addMarker(new MarkerOptions()
-                    .position(ee)
-                    .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
-            m1.setTag(eetakemon);
-        }if (n==5){
-            Marker m1 = mMap.addMarker(new MarkerOptions()
-                    .position(ff)
-                    .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
-            m1.setTag(eetakemon);
-        }if (n==6){
-            Marker m1 = mMap.addMarker(new MarkerOptions()
-                    .position(gg)
-                    .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
-            m1.setTag(eetakemon);
-        }if (n==7){
-            Marker m1 = mMap.addMarker(new MarkerOptions()
-                    .position(hh)
-                    .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
-            m1.setTag(eetakemon);
-        }if (n==8){
-            Marker m1 = mMap.addMarker(new MarkerOptions()
-                    .position(ii)
-                    .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
-            m1.setTag(eetakemon);
-        }if (n==9){
-            Marker m1 = mMap.addMarker(new MarkerOptions()
-                    .position(jj)
-                    .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakemon,150,150))));
-            m1.setTag(eetakemon);
-        }
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener()
         {
             @Override
@@ -387,7 +329,8 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
 
                 Intent intent = new Intent(MapsActivity.this,QuestionActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("stuff",eetakemon);
+                bundle.putString("nameExtra",eetakname);
+                bundle.putString("tipoExtra",eetaktipo);
                 intent.putExtras(bundle);
                 startActivity(intent);
                 return false;
@@ -402,4 +345,6 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
         Bitmap resizedBitmap = Bitmap.createScaledBitmap(imageBitmap, width, height, false);
         return resizedBitmap;
     }
+
+
 }

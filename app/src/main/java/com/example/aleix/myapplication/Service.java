@@ -1,5 +1,6 @@
 package com.example.aleix.myapplication;
 
+import com.example.aleix.myapplication.Entity.Capturar;
 import com.example.aleix.myapplication.Entity.Eetakemon;
 import com.example.aleix.myapplication.Entity.User;
 
@@ -43,7 +44,10 @@ interface Service {
     @GET("/EetakemonGo/Eetakemon/ListApp")
     Call<List<Eetakemon>> Listar();
 
+    @GET("/EetakemonGo/Eetakemon/AllApp")
+    Call<List<Eetakemon>> ListarTusEetakemons();
+
     @GET("/EetakemonGo/Eetakemon/ListMapa")
-    Call<List<Eetakemon>> Eetakname();
+    Call<List<Capturar>> Eetakname();
 
 }

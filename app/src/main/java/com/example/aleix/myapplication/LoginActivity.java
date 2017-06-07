@@ -131,7 +131,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                 OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
                 Retrofit.Builder builder = new Retrofit.Builder()
-                        .baseUrl("http://192.168.1.35:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
+                        .baseUrl("http://10.0.2.2:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
                         .addConverterFactory(GsonConverterFactory.create());
 //
                 Retrofit retrofit =

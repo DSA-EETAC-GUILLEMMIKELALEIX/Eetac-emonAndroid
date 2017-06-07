@@ -52,7 +52,7 @@ public class EetakedexActivity extends AppCompatActivity {
             public void onClick(View view) {
                 OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
                 Retrofit.Builder builder = new Retrofit.Builder()
-                        .baseUrl("http://192.168.1.35:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
+                        .baseUrl("http://10.0.2.2:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
                         .addConverterFactory(GsonConverterFactory.create());
 //
                 Retrofit retrofit =
@@ -88,25 +88,6 @@ public class EetakedexActivity extends AppCompatActivity {
                         lv = (ListView) findViewById(R.id.listV);
                         lv.setAdapter(adapter);
 
-                        /*setListAdapter( new ArrayAdapter<Eetakemon>(EetakedexActivity.this,R.layout.list, e));
-                        ListView lisv = getListView();
-                        lisv.setTextFilterEnabled(true);
-
-                        lisv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-                            public void onItemClick(AdapterView<?> parent, View view,
-                                                    int position, long id){
-                                Toast.makeText(getApplicationContext(),((TextView) view).getText(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        lv = (ListView) findViewById(R.id.listV);
-                        l = new ArrayList<>();
-                        for (int j=0; j < e.size(); j++){
-                            String item = e.get(j).toString();
-                            l.add (item);
-                        }
-                        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(EetakedexActivity.this, android.R.layout.simple_list_item_1, l);
-                        lv.setAdapter(arrayAdapter);*/
-
 
                         for (Eetakemon etk: e) {
                             Log.d(tag, "Mostrar Eetakemon correctamente:" + etk);
@@ -118,15 +99,6 @@ public class EetakedexActivity extends AppCompatActivity {
                     public void onFailure(Call<List<Eetakemon>> call, Throwable t) {
 
                     }
-
-
-                /*@Override
-                protected void onListItemClick(ListView l, View v, int position, long id){
-                    String selectedValue = (String) getListAdapter().getItem(position);
-                    Toast.makeText(this, selectedValue, Toast.LENGTH_SHORT).show();
-                }
-
-*/
 
             });
         }

@@ -13,10 +13,11 @@ public class QuestionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_question);
 
         Bundle bundle = getIntent().getExtras();
-        String stuff = bundle.getString("stuff");
+        String stuff1 = bundle.getString("nameExtra");
+        String stuff2 = bundle.getString("tipoExtra");
 
         TextView mtv = (TextView) findViewById(R.id.textView2);
-        mtv.setText("Eetakemon: " + stuff);
+        mtv.setText("Eetakemon: " + stuff1.toUpperCase() +  "  Tipo: " + stuff2.toUpperCase());
 
         MediaPlayer mediaPlayer;
         mediaPlayer = MediaPlayer.create(this,R.raw.cancion);
