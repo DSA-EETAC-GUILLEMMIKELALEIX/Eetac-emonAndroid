@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -127,6 +128,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 String email= mEmail.getText().toString();
                 String pass = mPass.getText().toString();
 
+
+
                 attemptLogin();
 
                 OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
@@ -151,21 +154,29 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 
                 // Fetch and print a list of the contributors to the library.
-                call.enqueue(new Callback() {
+                call.enqueue(new Callback<User>() {
 
                     //***************Comprobacion de que recoge los datos**********
                     @Override
-                    public void onResponse(Call call, Response response) {
-                        User contributor = (User) response.body();
-                        mediaPlayer.stop();
-                        Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
-                        startActivity(intent);
-                        Log.d(tag, "Logueado correctamente");
+                    public void onResponse(Call<User> call, Response<User> response) {
+                        if(response.code()==201) {
+                            User contributor = (User) response.body();
+                            Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
+                            startActivity(intent);
+                            mediaPlayer.stop();
+                            Log.d(tag, "Logueado correctamente");
+                        }
+                        else if(response.code()==202){
+                            Toast.makeText(LoginActivity.this, "ERROR 202 AL LOGUEAR", Toast.LENGTH_SHORT).show();
+
+                            Log.d(tag, "ERROR 202 al loguear");
+                            //NOSE PORQUE COÑO PETA AQUI!
+                        }
                     }
 
                     @Override
-                    public void onFailure(Call call, Throwable t) {
-                        Toast.makeText(LoginActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
+                    public void onFailure(Call<User> call, Throwable t) {
+                        Toast.makeText(LoginActivity.this, "ERROR AL LOGUEAR!", Toast.LENGTH_SHORT).show();
                         Log.d(tag, "ERROR al loguear");
                     }
                 });
