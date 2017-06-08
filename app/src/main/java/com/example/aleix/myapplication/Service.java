@@ -1,6 +1,7 @@
 package com.example.aleix.myapplication;
 
 import com.example.aleix.myapplication.Entity.Capturar;
+import com.example.aleix.myapplication.Entity.Captured;
 import com.example.aleix.myapplication.Entity.Eetakemon;
 import com.example.aleix.myapplication.Entity.Question;
 import com.example.aleix.myapplication.Entity.User;
@@ -43,6 +44,9 @@ interface Service {
 
     @POST("/EetakemonGo/Eetakemon/Question")
     Call<Question> Pregunta(@Body Eetakemon eetak);
+
+    @POST("/EetakemonGo/Eetakemon/Capturado")
+    Call<Question> Capturado(@Body Captured capt);
 
 
 }

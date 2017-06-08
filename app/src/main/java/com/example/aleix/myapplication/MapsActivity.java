@@ -106,22 +106,6 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
         });
     }
 
-/*
-
-[
-{id: x
- type: y,
- name: '',
- geo: {
-     lat: l,
-     long: t
-     }
-
-]
-
- */
-
-
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -301,15 +285,18 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
         });
     }
 
+    Marker m1;
 
     public void assignarLocalitzacio(final String eetakname, final String eetaktipo, final double lat, final double longi){ //Al fer el get, se li haurà de passar el nom del eetakemon per pritar-lo al mapa
 
         Log.d(tag, "Loc:"+lat+","+longi);
         LatLng loc = new LatLng(lat, longi);
-        final Marker m1 = mMap.addMarker(new MarkerOptions()
-                    .position(loc)
-                    .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakname,150,150))));
-            m1.setTag(eetakname);
+
+        m1 = mMap.addMarker(new MarkerOptions()
+                .position(loc)
+                .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakname, 150, 150))));
+        m1.setTag(eetaktipo);
+        m1.setTitle(eetakname.toUpperCase());
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener()
         {
@@ -320,8 +307,9 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
 
                 Intent intent = new Intent(MapsActivity.this,QuestionActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("nameExtra",m1.getTag().toString());
-                bundle.putString("tipoExtra",eetaktipo);
+
+                bundle.putString("nameExtra",arg0.getTitle());
+                bundle.putString("tipoExtra",arg0.getTag().toString());
                 intent.putExtras(bundle);
                 startActivity(intent);
                 return false;

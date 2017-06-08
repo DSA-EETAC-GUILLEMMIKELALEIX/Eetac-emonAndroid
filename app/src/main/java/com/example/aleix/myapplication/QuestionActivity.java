@@ -1,6 +1,7 @@
 package com.example.aleix.myapplication;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,17 +28,20 @@ public class QuestionActivity extends AppCompatActivity {
 
     final String tag = "MAPACT";
 
-    Button Si = (Button) findViewById (R.id.button4);
-    Button No = (Button) findViewById (R.id.button5);
+    //Button Si = (Button) findViewById (R.id.button4);
+    //Button No = (Button) findViewById (R.id.button5);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(tag, "AQUIII!");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question);
 
         Bundle bundle = getIntent().getExtras();
         final String stuff1 = bundle.getString("nameExtra");
         final String stuff2 = bundle.getString("tipoExtra");
+
+        Log.d(tag, "bundle llegit!");
 
         TextView mtv = (TextView) findViewById(R.id.textView2);
         mtv.setText("Eetakemon: " + stuff1.toUpperCase() +  "  Tipo: " + stuff2.toUpperCase());
@@ -48,7 +52,8 @@ public class QuestionActivity extends AppCompatActivity {
         mediaPlayer.setVolume(100,100);
         mediaPlayer.start();
 
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+
+        /*OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl("http://10.0.2.2:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
                 .addConverterFactory(GsonConverterFactory.create());
@@ -61,8 +66,8 @@ public class QuestionActivity extends AppCompatActivity {
                         .build();
 
         // Create an instance of our GitHub API interface.
-        Service acta = retrofit.create(Service.class);
-        Eetakemon e = new Eetakemon();
+        final Service acta = retrofit.create(Service.class);
+        final Eetakemon e = new Eetakemon();
 
         // Create a call instance for looking up Retrofit contributors.
         Call<Question> call1 = acta.Pregunta(e);
@@ -97,9 +102,14 @@ public class QuestionActivity extends AppCompatActivity {
                             capturedEetak.setName(stuff1);
                             capturedEetak.setLevel(level);
 
+                            // Create a call instance for looking up Retrofit contributors.
+                            Call<Question> call1 = acta.Capturado(capturedEetak);
+                            Log.d(tag, "CALL: ***********DATOS**************************");
                         }
                         if(quest.getAnswer()==0){
                             //Error volver al mapa y eliminar el marker
+                            Intent intent = new Intent(QuestionActivity.this, MapsActivity.class);
+                            startActivity(intent);
                         }
                     }
                 });
@@ -109,6 +119,8 @@ public class QuestionActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         if(quest.getAnswer()==1){
                             //Error volver al mapa y eliminar el marker
+                            Intent intent = new Intent(QuestionActivity.this, MapsActivity.class);
+                            startActivity(intent);
                         }
                         if(quest.getAnswer()==0){
                             //Eetakemon capturado
@@ -129,12 +141,16 @@ public class QuestionActivity extends AppCompatActivity {
                     }
                 });
 
+
+
+
+
             }
 
             @Override
             public void onFailure(Call<Question> call, Throwable t) {
 
             }
-        });
+        });*/
     }
 }
