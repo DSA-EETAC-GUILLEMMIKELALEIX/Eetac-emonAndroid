@@ -61,6 +61,7 @@ public class RegisterActivity extends AppCompatActivity {
                 // Create an instance of our GitHub API interface.
                 Service register = retrofit.create(Service.class);
                 User usuario = new User(name,email, pass);
+                Log.d(tag, "Loguear: " + name + ", " + email);
 
                 // Create a call instance for looking up Retrofit contributors.
                 Call<User> call = register.Register(usuario);
@@ -68,19 +69,20 @@ public class RegisterActivity extends AppCompatActivity {
 
 
                 // Fetch and print a list of the contributors to the library.
-                call.enqueue(new Callback() {
+                call.enqueue(new Callback<User>() {
 
                     //***************Comprobacion de que recoge los datos**********
                     @Override
-                    public void onResponse(Call call, Response response) {
+                    public void onResponse(Call<User> call, Response<User> response) {
                         User contributor = (User) response.body();
-                        Intent intent = new Intent(RegisterActivity.this, MapsActivity.class);
+                        Toast.makeText(RegisterActivity.this, "LOGUEADO", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                         startActivity(intent);
                         Log.d(tag, "Logueado correctamente");
                     }
 
                     @Override
-                    public void onFailure(Call call, Throwable t) {
+                    public void onFailure(Call<User> call, Throwable t) {
                         Toast.makeText(RegisterActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
                         Log.d(tag, "ERROR al loguear");
                     }

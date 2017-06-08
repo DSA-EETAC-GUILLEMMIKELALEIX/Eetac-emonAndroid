@@ -44,6 +44,8 @@ public class TusEetakemonsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_eetakedex);
 
+        Button volver = (Button) findViewById(R.id.volver);
+
         Log.d(tag, "Eetakedex - onCreate() ");
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         Retrofit.Builder builder = new Retrofit.Builder()
@@ -71,32 +73,45 @@ public class TusEetakemonsActivity extends AppCompatActivity {
             public void onResponse(Call<List<Eetakemon>> call, Response<List<Eetakemon>> response) {
 
                 Log.d(tag, "CALL:onResponse ***********DATOS**************************");
-                List<Eetakemon> e = (List<Eetakemon>) response.body();
 
                 final Context context = TusEetakemonsActivity.this;
 
-                // Create adapter
-                EetakemonAdapter adapter = new EetakemonAdapter(TusEetakemonsActivity.this, e);
+                if(response.code()==200) {
+                    List<Eetakemon> e = (List<Eetakemon>) response.body();
+                    // Create adapter
+                    EetakemonAdapter adapter = new EetakemonAdapter(TusEetakemonsActivity.this, e);
 
-                Log.d(tag, "Adapter creado");
-                // Create list view
-                lv = (ListView) findViewById(R.id.listV);
-                lv.setAdapter(adapter);
+                    Log.d(tag, "Adapter creado");
+                    // Create list view
+                    lv = (ListView) findViewById(R.id.listV);
+                    lv.setAdapter(adapter);
 
 
-                for (Eetakemon etk: e) {
-                    Log.d(tag, "Mostrar Eetakemon correctamente:" + etk);
+                    for (Eetakemon etk : e) {
+                        Log.d(tag, "Mostrar Eetakemon correctamente:" + etk);
 
+                    }
+                }else {
+                    Toast.makeText(context, "LISTA VACIA: No has capturado aun", Toast.LENGTH_SHORT).show();
+                    Log.d(tag, "ERROR 1");
                 }
             }
 
             @Override
             public void onFailure(Call<List<Eetakemon>> call, Throwable t) {
-
+                Log.d(tag, "ERROR 2");
+                Toast.makeText(TusEetakemonsActivity.this, "ERROR", Toast.LENGTH_SHORT).show();
             }
 
         });
 
+        volver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(TusEetakemonsActivity.this, MenuActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
 

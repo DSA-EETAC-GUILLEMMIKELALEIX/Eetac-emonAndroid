@@ -44,6 +44,8 @@ public class EetakedexActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_eetakedex);
 
+        Button volver = (Button) findViewById(R.id.volver);
+
         Log.d(tag, "Eetakedex - onCreate() ");
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
@@ -72,22 +74,30 @@ public class EetakedexActivity extends AppCompatActivity {
             public void onResponse(Call<List<Eetakemon>> call, Response<List<Eetakemon>> response) {
 
                 Log.d(tag, "CALL:onResponse ***********DATOS**************************");
-                List<Eetakemon> e = (List<Eetakemon>) response.body();
+
 
                 final Context context = EetakedexActivity.this;
 
-                // Create adapter
-                EetakemonAdapter adapter = new EetakemonAdapter(EetakedexActivity.this, e);
+                if(response.code()==200) {
+                    List<Eetakemon> e = (List<Eetakemon>) response.body();
 
-                Log.d(tag, "Adapter creado");
-                // Create list view
-                lv = (ListView) findViewById(R.id.listV);
-                lv.setAdapter(adapter);
+                    // Create adapter
+                    EetakemonAdapter adapter = new EetakemonAdapter(EetakedexActivity.this, e);
+
+                    Log.d(tag, "Adapter creado");
+                    // Create list view
+                    lv = (ListView) findViewById(R.id.listV);
+                    lv.setAdapter(adapter);
 
 
-                for (Eetakemon etk: e) {
-                    Log.d(tag, "Mostrar Eetakemon correctamente:" + etk);
+                    for (Eetakemon etk : e) {
+                        Log.d(tag, "Mostrar Eetakemon correctamente:" + etk);
 
+                    }
+                }
+                else{
+                    Toast.makeText(context, "LISTA VACIA: No has capturado aun", Toast.LENGTH_SHORT).show();
+                    Log.d(tag, "ERROR 1");
                 }
             }
 
@@ -96,6 +106,14 @@ public class EetakedexActivity extends AppCompatActivity {
 
             }
 
-    });
+        });
+
+        volver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(EetakedexActivity.this, MenuActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
