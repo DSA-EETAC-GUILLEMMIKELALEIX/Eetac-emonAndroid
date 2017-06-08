@@ -28,8 +28,6 @@ public class QuestionActivity extends AppCompatActivity {
 
     final String tag = "MAPACT";
 
-    //Button Si = (Button) findViewById (R.id.button4);
-    //Button No = (Button) findViewById (R.id.button5);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +38,8 @@ public class QuestionActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         final String stuff1 = bundle.getString("nameExtra");
         final String stuff2 = bundle.getString("tipoExtra");
+
+
 
         Log.d(tag, "bundle llegit!");
 
@@ -52,8 +52,10 @@ public class QuestionActivity extends AppCompatActivity {
         mediaPlayer.setVolume(100,100);
         mediaPlayer.start();
 
+        /*final Button Si = (Button) findViewById (R.id.button4);
+        final Button No = (Button) findViewById (R.id.button5);
 
-        /*OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl("http://10.0.2.2:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
                 .addConverterFactory(GsonConverterFactory.create());
@@ -66,8 +68,9 @@ public class QuestionActivity extends AppCompatActivity {
                         .build();
 
         // Create an instance of our GitHub API interface.
-        final Service acta = retrofit.create(Service.class);
-        final Eetakemon e = new Eetakemon();
+        Service acta = retrofit.create(Service.class);
+        Eetakemon e = new Eetakemon();
+        e.setTipo(stuff2);
 
         // Create a call instance for looking up Retrofit contributors.
         Call<Question> call1 = acta.Pregunta(e);
@@ -102,9 +105,6 @@ public class QuestionActivity extends AppCompatActivity {
                             capturedEetak.setName(stuff1);
                             capturedEetak.setLevel(level);
 
-                            // Create a call instance for looking up Retrofit contributors.
-                            Call<Question> call1 = acta.Capturado(capturedEetak);
-                            Log.d(tag, "CALL: ***********DATOS**************************");
                         }
                         if(quest.getAnswer()==0){
                             //Error volver al mapa y eliminar el marker
