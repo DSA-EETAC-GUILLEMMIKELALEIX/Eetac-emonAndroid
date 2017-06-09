@@ -39,6 +39,8 @@ public class QuestionActivity extends AppCompatActivity {
         final String stuff1 = bundle.getString("nameExtra");
         final String stuff2 = bundle.getString("tipoExtra");
 
+        Button volver = (Button) findViewById(R.id.volver);
+
 
 
         Log.d(tag, "bundle llegit!");
@@ -152,5 +154,14 @@ public class QuestionActivity extends AppCompatActivity {
 
             }
         });*/
+
+        volver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(QuestionActivity.this, MapsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
+
 }
