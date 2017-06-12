@@ -16,6 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.aleix.myapplication.Entity.Eetakemon;
+import com.example.aleix.myapplication.Entity.Relation;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
 
@@ -47,10 +50,15 @@ public class TusEetakemonsActivity extends AppCompatActivity {
         Button volver = (Button) findViewById(R.id.volver);
 
         Log.d(tag, "Eetakedex - onCreate() ");
+
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl("http://10.0.2.2:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
-                .addConverterFactory(GsonConverterFactory.create());
+                .addConverterFactory(GsonConverterFactory.create(gson));
 //
         Retrofit retrofit =
                 builder
@@ -61,25 +69,26 @@ public class TusEetakemonsActivity extends AppCompatActivity {
 
         // Create an instance of our GitHub API interface.
         Service acta = retrofit.create(Service.class);
+        String token = "Bearer " + TokenSaver.getToken(this);
 
         // Create a call instance for looking up Retrofit contributors.
-        Call<List<Eetakemon>> call1 = acta.ListarTusEetakemons();
+        Call<List<Relation>> call1 = acta.ListarTusEetakemons(token, 1);
         Log.d(tag, "CALL: ***********DATOS**************************");
 
 
         // Fetch and print a list of the contributors to the library.
-        call1.enqueue(new Callback<List<Eetakemon>>(){
+        call1.enqueue(new Callback<List<Relation>>(){
             @Override
-            public void onResponse(Call<List<Eetakemon>> call, Response<List<Eetakemon>> response) {
+            public void onResponse(Call<List<Relation>> call, Response<List<Relation>> response) {
 
-                Log.d(tag, "CALL:onResponse ***********DATOS**************************");
+                Log.d(tag, "Response: " + response.code());
 
                 final Context context = TusEetakemonsActivity.this;
 
                 if(response.code()==200) {
-                    List<Eetakemon> e = (List<Eetakemon>) response.body();
+                    List<Relation> e = (List<Relation>) response.body();
                     // Create adapter
-                    EetakemonAdapter adapter = new EetakemonAdapter(TusEetakemonsActivity.this, e);
+                    RelationAdapter adapter = new RelationAdapter(TusEetakemonsActivity.this, e);
 
                     Log.d(tag, "Adapter creado");
                     // Create list view
@@ -87,18 +96,22 @@ public class TusEetakemonsActivity extends AppCompatActivity {
                     lv.setAdapter(adapter);
 
 
-                    for (Eetakemon etk : e) {
+                    for (Relation etk : e) {
                         Log.d(tag, "Mostrar Eetakemon correctamente:" + etk);
 
                     }
-                }else {
-                    Toast.makeText(context, "LISTA VACIA: No has capturado aun", Toast.LENGTH_SHORT).show();
-                    Log.d(tag, "ERROR 1");
+                }else if(response.code()==202){
+                    Toast.makeText(context, "NO HAY EETAC-EMONS: lista vacia", Toast.LENGTH_SHORT).show();
+                    Log.d(tag, "ERROR token");
+                }
+                else if(response.code()==401){
+                    Toast.makeText(context, "Token expirado: Vuelve a loguearte", Toast.LENGTH_SHORT).show();
+                    Log.d(tag, "ERROR token");
                 }
             }
 
             @Override
-            public void onFailure(Call<List<Eetakemon>> call, Throwable t) {
+            public void onFailure(Call<List<Relation>> call, Throwable t) {
                 Log.d(tag, "ERROR 2");
                 Toast.makeText(TusEetakemonsActivity.this, "ERROR", Toast.LENGTH_SHORT).show();
             }

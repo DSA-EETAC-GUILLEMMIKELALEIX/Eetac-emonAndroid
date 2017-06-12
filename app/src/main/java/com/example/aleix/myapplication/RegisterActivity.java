@@ -14,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.aleix.myapplication.Entity.User;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -46,10 +48,14 @@ public class RegisterActivity extends AppCompatActivity {
                 String email = mEmail.getText().toString();
                 String pass = mPass.getText().toString();
 
+                Gson gson = new GsonBuilder()
+                        .setLenient()
+                        .create();
+
                 OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
                 Retrofit.Builder builder = new Retrofit.Builder()
                         .baseUrl("http://10.0.2.2:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
-                        .addConverterFactory(GsonConverterFactory.create());
+                        .addConverterFactory(GsonConverterFactory.create(gson));
 
                 Retrofit retrofit =
                         builder
@@ -64,30 +70,37 @@ public class RegisterActivity extends AppCompatActivity {
                 usuario.setNombre(name);
                 usuario.setContrasena(pass);
                 usuario.setEmail(email);
-                Log.d(tag, "Loguear: " + name + ", " + email);
+                Log.d(tag, "Registar: " + name + ", " + email);
 
                 // Create a call instance for looking up Retrofit contributors.
-                Call<User> call = register.Register(usuario);
+                Call<String> call = register.Register(usuario);
                 System.out.println("***********DATOS**************************");
 
 
                 // Fetch and print a list of the contributors to the library.
-                call.enqueue(new Callback<User>() {
+                call.enqueue(new Callback<String>() {
 
                     //***************Comprobacion de que recoge los datos**********
                     @Override
-                    public void onResponse(Call<User> call, Response<User> response) {
-                        User contributor = (User) response.body();
-                        Toast.makeText(RegisterActivity.this, "REGISTRADO", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                        Log.d(tag, "Logueado correctamente");
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        if (response.code()==201) {
+                            Toast.makeText(RegisterActivity.this, "REGISTRADO", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            Log.d(tag, "Logueado correctamente");
+                        }
+                        else if(response.code()==202){
+                            Toast.makeText(RegisterActivity.this, "ERROR 202: Usuario ya utilizado", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            Toast.makeText(RegisterActivity.this, "ERROR 202", Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
-                    public void onFailure(Call<User> call, Throwable t) {
+                    public void onFailure(Call<String> call, Throwable t) {
                         Toast.makeText(RegisterActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
-                        Log.d(tag, "ERROR al loguear");
+                        Log.d(tag, "ERROR al Registrar");
                     }
                 });
             }

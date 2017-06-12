@@ -1,33 +1,31 @@
 package com.example.aleix.myapplication;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.example.aleix.myapplication.Entity.Captured;
 import com.example.aleix.myapplication.Entity.Eetakemon;
+import com.example.aleix.myapplication.Entity.Relation;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Aleix on 31/05/2017.
  */
 
-public class EetakemonAdapter extends BaseAdapter{
+public class RelationAdapter extends BaseAdapter{
     private Context mContext;
     private LayoutInflater mInflater;
-    private List<Eetakemon> mDataSource;
+    private List<Relation> mDataSource;
 
     final String tag = "MAPACT";
 
-    public EetakemonAdapter(Context context, List<Eetakemon> items) {
+    public RelationAdapter(Context context, List<Relation> items) {
         mContext = context;
         mDataSource = items;
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -86,39 +84,38 @@ public class EetakemonAdapter extends BaseAdapter{
         TextView detailTextView = holder.detailTextView;
         ImageView thumbnailImageView = holder.thumbnailImageView;
 
+        Log.d(tag, "AAAAAA"); //ME DA UN ERROR AQUIIII
+
         //Get corresponding recipe for row
-        Eetakemon eetak = (Eetakemon) getItem(position);
+        Captured eetak = (Captured) getItem(position);
+
+        Log.d(tag, "BBBBBB");
 
         // Update row view's textviews to display recipe information
-        titleTextView.setText(eetak.getId() + ": " + eetak.getNombre());
-        subtitleTextView.setText(eetak.getTipo());
+        titleTextView.setText(eetak.getIdEetakemon() + ": " + eetak.getName());
 
-        /*Glide.with(EetakemonAdapter.this)
-                .load(eetak.getFoto())
-                .override(150, 150)
-                .into(thumbnailImageView);*/
-
-        if(eetak.getNombre().equals("Bernorlax")) {
+        if(eetak.getName().equals("Bernorlax")) {
             thumbnailImageView.setImageResource(R.drawable.bernorlax);
         }
-        else if(eetak.getNombre().equals("Davyphno")) {
+        else if(eetak.getName().equals("Davyphno")) {
             thumbnailImageView.setImageResource(R.drawable.davyphno);
         }
-        else if(eetak.getNombre().equals("Francerpie")) {
+        else if(eetak.getName().equals("Francerpie")) {
             thumbnailImageView.setImageResource(R.drawable.francerpie);
         }
-        else if(eetak.getNombre().equals("Jesuskou")) {
+        else if(eetak.getName().equals("Jesuskou")) {
             thumbnailImageView.setImageResource(R.drawable.jesuskou);
         }
-        else if(eetak.getNombre().equals("Jordinine")) {
+        else if(eetak.getName().equals("Jordinine")) {
             thumbnailImageView.setImageResource(R.drawable.jordinine);
         }
-        else if(eetak.getNombre().equals("Lluiskarp")) {
+        else if(eetak.getName().equals("Lluiskarp")) {
             thumbnailImageView.setImageResource(R.drawable.lluiskarp);
         }
-        else if(eetak.getNombre().equals("Mewdecerio")) {
+        else if(eetak.getName().equals("Mewdecerio")) {
             thumbnailImageView.setImageResource(R.drawable.mewdecerio);
         }
+
 
         return convertView;
     }

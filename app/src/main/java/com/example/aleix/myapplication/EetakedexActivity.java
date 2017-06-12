@@ -3,6 +3,7 @@ package com.example.aleix.myapplication;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,12 +11,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.aleix.myapplication.Entity.Eetakemon;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
 
@@ -48,10 +52,14 @@ public class EetakedexActivity extends AppCompatActivity {
 
         Log.d(tag, "Eetakedex - onCreate() ");
 
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl("http://10.0.2.2:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
-                .addConverterFactory(GsonConverterFactory.create());
+                .addConverterFactory(GsonConverterFactory.create(gson));
     //
         Retrofit retrofit =
                 builder
@@ -63,8 +71,11 @@ public class EetakedexActivity extends AppCompatActivity {
         // Create an instance of our GitHub API interface.
         Service acta = retrofit.create(Service.class);
 
+        Log.d(tag, "Token: " + TokenSaver.getToken(this));
+        String token = "Bearer " + TokenSaver.getToken(this);
+
         // Create a call instance for looking up Retrofit contributors.
-        Call<List<Eetakemon>> call1 = acta.Listar();
+        Call<List<Eetakemon>> call1 = acta.Listar(token);
         Log.d(tag, "CALL: ***********DATOS**************************");
 
 
@@ -73,8 +84,7 @@ public class EetakedexActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Eetakemon>> call, Response<List<Eetakemon>> response) {
 
-                Log.d(tag, "CALL:onResponse ***********DATOS**************************");
-
+                Log.d(tag, "Response:" + response.code());
 
                 final Context context = EetakedexActivity.this;
 
@@ -95,9 +105,13 @@ public class EetakedexActivity extends AppCompatActivity {
 
                     }
                 }
-                else{
-                    Toast.makeText(context, "LISTA VACIA: No has capturado aun", Toast.LENGTH_SHORT).show();
-                    Log.d(tag, "ERROR 1");
+                else if(response.code()==202){
+                    Toast.makeText(context, "NO HAY EETAC-EMONS: lista vacia", Toast.LENGTH_SHORT).show();
+                    Log.d(tag, "ERROR token");
+                }
+                else if(response.code()==401){
+                    Toast.makeText(context, "Token expirado: Vuelve a loguearte", Toast.LENGTH_SHORT).show();
+                    Log.d(tag, "ERROR token");
                 }
             }
 

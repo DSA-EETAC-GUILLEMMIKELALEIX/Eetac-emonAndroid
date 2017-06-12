@@ -21,6 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.JsonReader;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -41,6 +42,8 @@ import android.widget.Toast;
 
 import com.example.aleix.myapplication.Entity.Eetakemon;
 import com.example.aleix.myapplication.Entity.User;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
 //import org.json.JSONException;
@@ -128,15 +131,18 @@ public class LoginActivity extends AppCompatActivity /*implements LoaderCallback
                 String email= mEmail.getText().toString();
                 String pass = mPass.getText().toString();
 
-
-
                 //attemptLogin();
+
+                Gson gson = new GsonBuilder()
+                        .setLenient()
+                        .create();
 
                 OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
                 Retrofit.Builder builder = new Retrofit.Builder()
                         .baseUrl("http://10.0.2.2:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
-                        .addConverterFactory(GsonConverterFactory.create());
+                        .addConverterFactory(GsonConverterFactory.create(gson));
 //
+
                 Retrofit retrofit =
                         builder
                                 .client(
@@ -149,35 +155,37 @@ public class LoginActivity extends AppCompatActivity /*implements LoaderCallback
                 User usuario = new User(email, pass);
 
                 // Create a call instance for looking up Retrofit contributors.
-                Call<User> call = login.Login(usuario);
+                Call<String> call = login.Login(usuario);
                 System.out.println("***********DATOS**************************");
 
 
                 // Fetch and print a list of the contributors to the library.
-                call.enqueue(new Callback<User>() {
+                call.enqueue(new Callback<String>() {
 
                     //***************Comprobacion de que recoge los datos**********
                     @Override
-                    public void onResponse(Call<User> call, Response<User> response) {
-                        if(response.code()==201) {
-                            User contributor = (User) response.body();
+                    public void onResponse(Call<String> call, Response<String> response) {
+
+                        if(response.code()==200) {
+                            String token = (String) response.body();
+                            TokenSaver.setToken(LoginActivity.this, token);
                             Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
                             startActivity(intent);
                             mediaPlayer.stop();
                             Log.d(tag, "Logueado correctamente");
                         }
-                        else if(response.code()==202){
-                            Toast.makeText(LoginActivity.this, "ERROR 202 AL LOGUEAR", Toast.LENGTH_SHORT).show();
+                        else if(response.code()==401){
+                            Toast.makeText(LoginActivity.this, "ERROR 401 AL LOGUEAR", Toast.LENGTH_SHORT).show();
 
-                            Log.d(tag, "ERROR 202 al loguear");
-                            //NOSE PORQUE COÑO PETA AQUI!
+                            Log.d(tag, "ERROR 401 al loguear");
+
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<User> call, Throwable t) {
-                        Toast.makeText(LoginActivity.this, "ERROR AL LOGUEAR!", Toast.LENGTH_SHORT).show();
-                        Log.d(tag, "ERROR al loguear");
+                    public void onFailure(Call<String> call, Throwable t) {
+                        Toast.makeText(LoginActivity.this, "ERROR AL LOGUEAR", Toast.LENGTH_SHORT).show();
+                        Log.d(tag, "ERROR al loguear: " + t.toString());
                     }
                 });
 

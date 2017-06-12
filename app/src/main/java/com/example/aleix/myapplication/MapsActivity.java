@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -23,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.aleix.myapplication.Entity.Capturar;
 import com.example.aleix.myapplication.Entity.Eetakemon;
 import com.example.aleix.myapplication.Entity.User;
@@ -62,6 +64,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
+
+import static com.example.aleix.myapplication.R.id.image;
 
 public class MapsActivity extends FragmentActivity implements  OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener{
 
@@ -271,8 +275,8 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
                 Log.d(tag, "Lista size:" + captura.size());
 
                 for(int i=0;i<captura.size();i++){
-                    assignarLocalitzacio(captura.get(i).getNombre().toLowerCase(),captura.get(i).getTipo(),captura.get(i).getLatLong().getLatitud(), captura.get(i).getLatLong().getLongitud());
-                    Log.d(tag, "Eetakemon: "+captura + "Nombre: "+ captura.get(i).getNombre().toLowerCase()+"Coord:"+captura.get(i).getLatLong());
+                    assignarLocalitzacio(captura.get(i).getEetakemon(),captura.get(i).getLatLong().getLatitud(), captura.get(i).getLatLong().getLongitud());
+                    Log.d(tag, "Eetakemon: "+captura + "Nombre: "+ captura.get(i).getEetakemon().getNombre().toLowerCase()+"Coord:"+captura.get(i).getLatLong());
                 }
                 Log.d(tag, "Mostrar Eetakemon correctamente");
             }
@@ -287,16 +291,28 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
 
     Marker m1;
 
-    public void assignarLocalitzacio(final String eetakname, final String eetaktipo, final double lat, final double longi){ //Al fer el get, se li haurà de passar el nom del eetakemon per pritar-lo al mapa
+    public void assignarLocalitzacio(final Eetakemon eetakemon, final double lat, final double longi){ //Al fer el get, se li haurà de passar el nom del eetakemon per pritar-lo al mapa
 
-        Log.d(tag, "Loc:"+lat+","+longi);
+        Log.d(tag, "Loc:"+lat+","+longi + ", "+ eetakemon.getFoto());
         LatLng loc = new LatLng(lat, longi);
+
+        /*ImageView imageview = new ImageView(MapsActivity.this);
+
+        Glide.with(MapsActivity.this)
+                .load(eetakemon.getFoto())
+                .override(150, 150)
+                .into(imageview);
+
+        imageview.setDrawingCacheEnabled(true);
+        Bitmap bmap = imageview.getDrawingCache();
+        Log.d(tag, "AAAAAAAA:" + bmap.toString());
 
         m1 = mMap.addMarker(new MarkerOptions()
                 .position(loc)
-                .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(eetakname, 150, 150))));
-        m1.setTag(eetaktipo);
-        m1.setTitle(eetakname.toUpperCase());
+                .icon(BitmapDescriptorFactory.fromBitmap(bmap)));
+        m1.setTag(eetakemon.getTipo());
+        m1.setTitle(eetakemon.getNombre());
+        Log.d(tag, "bbbbbbb");*/
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener()
         {
@@ -317,13 +333,13 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
 
         });
     }
-
-    public Bitmap resizeMapIcons(String iconName, int width, int height){
+/*
+    public Bitmap resizeMapIcons(String iconName){
         Log.d(tag, " iconName: "+iconName);
         Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(),getResources().getIdentifier(iconName, "drawable", getPackageName()));
-        Bitmap resizedBitmap = Bitmap.createScaledBitmap(imageBitmap, width, height, false);
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(imageBitmap, 150, 150, false);
+        Log.d(tag, "AQUIIIIII");
         return resizedBitmap;
     }
-
-
+*/
 }
