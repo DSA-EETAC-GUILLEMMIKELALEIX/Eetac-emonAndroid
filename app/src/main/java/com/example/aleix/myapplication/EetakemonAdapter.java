@@ -93,10 +93,10 @@ public class EetakemonAdapter extends BaseAdapter{
         titleTextView.setText(eetak.getId() + ": " + eetak.getNombre());
         subtitleTextView.setText(eetak.getTipo());
 
-        /*Glide.with(EetakemonAdapter.this)
+        Glide.with(mContext)
                 .load(eetak.getFoto())
                 .override(150, 150)
-                .into(thumbnailImageView);*/
+                .into(thumbnailImageView);
 
         if(eetak.getNombre().equals("Bernorlax")) {
             thumbnailImageView.setImageResource(R.drawable.bernorlax);

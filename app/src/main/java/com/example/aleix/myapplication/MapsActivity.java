@@ -247,7 +247,7 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
         mMap.clear();
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
+                .baseUrl("http://10.192.230.97:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
                 .addConverterFactory(GsonConverterFactory.create());
 //
         Retrofit retrofit =
@@ -303,13 +303,13 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
                 .override(150, 150)
                 .into(imageview);
 
-        imageview.setDrawingCacheEnabled(true);
+        //imageview.setDrawingCacheEnabled(true);
         Bitmap bmap = imageview.getDrawingCache();
-        Log.d(tag, "AAAAAAAA:" + bmap.toString());
 
         m1 = mMap.addMarker(new MarkerOptions()
                 .position(loc)
                 .icon(BitmapDescriptorFactory.fromBitmap(bmap)));
+
         m1.setTag(eetakemon.getTipo());
         m1.setTitle(eetakemon.getNombre());
         Log.d(tag, "bbbbbbb");*/

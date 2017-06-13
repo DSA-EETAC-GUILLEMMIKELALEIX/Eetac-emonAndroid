@@ -1,6 +1,7 @@
 package com.example.aleix.myapplication;
 
 import com.example.aleix.myapplication.Entity.Capturar;
+import com.example.aleix.myapplication.Entity.Captured;
 import com.example.aleix.myapplication.Entity.Eetakemon;
 import com.example.aleix.myapplication.Entity.Question;
 import com.example.aleix.myapplication.Entity.Relation;
@@ -34,7 +35,7 @@ interface Service {
     Call<List<Eetakemon>> Listar(@Header("Authorization") String authHeader);
 
     @GET("/EetakemonGo/Relation/Captured/{id}")
-    Call<List<Relation>> ListarTusEetakemons(@Header("Authorization") String authHeader, @Path("id") int id);
+    Call<List<Captured>> ListarTusEetakemons(@Header("Authorization") String authHeader, @Path("id") int id);
 
     @GET("/EetakemonGo/Eetakemon/ListMapa")
     Call<List<Capturar>> Eetakname();

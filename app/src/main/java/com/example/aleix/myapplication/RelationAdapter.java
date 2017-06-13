@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.aleix.myapplication.Entity.Captured;
 import com.example.aleix.myapplication.Entity.Eetakemon;
 import com.example.aleix.myapplication.Entity.Relation;
@@ -21,11 +22,11 @@ import java.util.List;
 public class RelationAdapter extends BaseAdapter{
     private Context mContext;
     private LayoutInflater mInflater;
-    private List<Relation> mDataSource;
+    private List<Captured> mDataSource;
 
     final String tag = "MAPACT";
 
-    public RelationAdapter(Context context, List<Relation> items) {
+    public RelationAdapter(Context context, List<Captured> items) {
         mContext = context;
         mDataSource = items;
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -94,7 +95,12 @@ public class RelationAdapter extends BaseAdapter{
         // Update row view's textviews to display recipe information
         titleTextView.setText(eetak.getIdEetakemon() + ": " + eetak.getName());
 
-        if(eetak.getName().equals("Bernorlax")) {
+        Glide.with(mContext)
+                .load(eetak.getFoto())
+                .override(150, 150)
+                .into(thumbnailImageView);
+
+        /*if(eetak.getName().equals("Bernorlax")) {
             thumbnailImageView.setImageResource(R.drawable.bernorlax);
         }
         else if(eetak.getName().equals("Davyphno")) {
@@ -114,7 +120,7 @@ public class RelationAdapter extends BaseAdapter{
         }
         else if(eetak.getName().equals("Mewdecerio")) {
             thumbnailImageView.setImageResource(R.drawable.mewdecerio);
-        }
+        }*/
 
 
         return convertView;
