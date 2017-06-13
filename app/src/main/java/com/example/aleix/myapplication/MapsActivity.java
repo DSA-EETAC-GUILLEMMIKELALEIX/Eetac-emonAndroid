@@ -25,6 +25,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
 import com.example.aleix.myapplication.Entity.Capturar;
 import com.example.aleix.myapplication.Entity.Eetakemon;
 import com.example.aleix.myapplication.Entity.User;
@@ -32,6 +36,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -55,6 +60,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ExecutionException;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -294,25 +300,45 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
     public void assignarLocalitzacio(final Eetakemon eetakemon, final double lat, final double longi){ //Al fer el get, se li haurà de passar el nom del eetakemon per pritar-lo al mapa
 
         Log.d(tag, "Loc:"+lat+","+longi + ", "+ eetakemon.getFoto());
-        LatLng loc = new LatLng(lat, longi);
 
-        /*ImageView imageview = new ImageView(MapsActivity.this);
 
-        Glide.with(MapsActivity.this)
+        ImageView imageview = new ImageView(MapsActivity.this);
+
+
+        //{
+            final LatLng loc = new LatLng(lat, longi);
+
+            Glide.with(MapsActivity.this)
                 .load(eetakemon.getFoto())
-                .override(150, 150)
-                .into(imageview);
+                .asBitmap()
+                .override(120, 120)
+                .into(new BitmapImageViewTarget(imageview){
+                    @Override
+                    protected void setResource(Bitmap resource){
+                        m1 = mMap.addMarker(new MarkerOptions()
+                                .position(loc)
+                                .icon(BitmapDescriptorFactory.fromBitmap(resource)));
 
-        //imageview.setDrawingCacheEnabled(true);
-        Bitmap bmap = imageview.getDrawingCache();
+                        m1.setTag(eetakemon.getTipo());
+                        m1.setTitle(eetakemon.getNombre());
+                        Log.d(tag, "bbbbbbb");
 
-        m1 = mMap.addMarker(new MarkerOptions()
-                .position(loc)
-                .icon(BitmapDescriptorFactory.fromBitmap(bmap)));
+                    }
+                });
+        /*}
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }*/
 
-        m1.setTag(eetakemon.getTipo());
-        m1.setTitle(eetakemon.getNombre());
-        Log.d(tag, "bbbbbbb");*/
+
+        /*imageview.setDrawingCacheEnabled(true);
+        imageview.buildDrawingCache();
+        Bitmap bmp = imageview.getDrawingCache();*/
+
+
+
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener()
         {

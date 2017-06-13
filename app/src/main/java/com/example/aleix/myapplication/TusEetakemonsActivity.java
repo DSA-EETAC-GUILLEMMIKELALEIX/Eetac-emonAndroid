@@ -72,6 +72,8 @@ public class TusEetakemonsActivity extends AppCompatActivity {
         Service acta = retrofit.create(Service.class);
         String token = "Bearer " + TokenSaver.getToken(this);
 
+
+
         // Create a call instance for looking up Retrofit contributors.
         Call<List<Captured>> call1 = acta.ListarTusEetakemons(token, 1);
         Log.d(tag, "CALL: ***********DATOS**************************");
