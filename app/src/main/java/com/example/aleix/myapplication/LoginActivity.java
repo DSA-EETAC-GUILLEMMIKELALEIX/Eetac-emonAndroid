@@ -41,6 +41,7 @@ import android.content.Intent;
 import android.widget.Toast;
 
 import com.example.aleix.myapplication.Entity.Eetakemon;
+import com.example.aleix.myapplication.Entity.JWTUtils;
 import com.example.aleix.myapplication.Entity.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -165,10 +166,19 @@ public class LoginActivity extends AppCompatActivity /*implements LoaderCallback
                     //***************Comprobacion de que recoge los datos**********
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
+                        int id=0;
 
                         if(response.code()==200) {
                             String token = (String) response.body();
                             TokenSaver.setToken(LoginActivity.this, token);
+                            try {
+                                id=JWTUtils.decoded(token);
+                                Log.d(tag, String.valueOf(id));
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
                             Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
                             startActivity(intent);
                             mediaPlayer.stop();

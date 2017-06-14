@@ -90,6 +90,7 @@ public class RelationAdapter extends BaseAdapter{
         //Get corresponding recipe for row
         Captured eetak = (Captured) getItem(position);
 
+
         Log.d(tag, "BBBBBB");
 
         // Update row view's textviews to display recipe information
