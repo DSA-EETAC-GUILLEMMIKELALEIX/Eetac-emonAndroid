@@ -3,6 +3,7 @@ package com.example.aleix.myapplication;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -42,7 +43,7 @@ public class QuestionActivity extends AppCompatActivity {
         String[] separated = stuff2.split("-");
         String idstring = separated[0];
         String name = separated[1];
-        String tipo = separated[2];
+        final String tipo = separated[2];
 
         final int id;
 
@@ -86,10 +87,11 @@ public class QuestionActivity extends AppCompatActivity {
         // Create an instance of our GitHub API interface.
         Service acta = retrofit.create(Service.class);
         Eetakemon e = new Eetakemon();
-        e.setTipo(stuff2);
+        e.setTipo(tipo);
+        String token1 = "Bearer " + TokenSaver.getToken(this);
 
         // Create a call instance for looking up Retrofit contributors.
-        Call<Question> call1 = acta.Pregunta(e);
+        Call<Question> call1 = acta.Pregunta(token1, e);
         Log.d(tag, "CALL: ***********DATOS**************************");
 
         final Relation relationEetak = new Relation();
@@ -104,41 +106,39 @@ public class QuestionActivity extends AppCompatActivity {
                 Log.d(tag, "AAAAA: "+ quest.getQuestion() + ", "+ quest.getAnswer());
                 txtview.setText(quest.getQuestion());
 
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                final int  data = sharedPreferences.getInt("id", 0) ;
+
                 Si.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if(quest.getAnswer()==1){
                             //Eetakemon capturado
                             int level=0;
-                            if (stuff2.equals("Inferior")){
+                            if (tipo.equals("Inferior")){
                                 level=1;
                             }
-                            else if (stuff2.equals("Normal")){
+                            else if (tipo.equals("Normal")){
                                 level=15;
                             }
-                            else if (stuff2.equals("Legendario")){
+                            else if (tipo.equals("Legendario")){
                                 level=30;
                             }
-                            int idName = 0;
-                            SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-                            String restoredText = prefs.getString("text", null);
-                            if (restoredText != null) {
-                                idName = prefs.getInt("id", 0); //0 is the default value.
-                            }
 
-                            Log.d(tag, "IdName: " + idName);
+                            Log.d(tag, "IdName: " + data);
 
-                            relationEetak.setId(idName);
+                            relationEetak.setIdUser(data);
                             relationEetak.setIdEetakemon(id);
                             relationEetak.setLevel(level);
 
+                            pasarRespuesta(relationEetak);
                         }
                         if(quest.getAnswer()==0){
                             //Error volver al mapa y eliminar el marker
                             Intent intent = new Intent(QuestionActivity.this, MapsActivity.class);
                             startActivity(intent);
                         }
-                        bool = true;
+
                     }
 
                 });
@@ -154,26 +154,24 @@ public class QuestionActivity extends AppCompatActivity {
                         if(quest.getAnswer()==0){
                             //Eetakemon capturado
                             int level=0;
-                            if (stuff2.equals("Inferior")){
+                            if (tipo.equals("Inferior")){
                                 level=1;
                             }
-                            else if (stuff2.equals("Normal")){
+                            else if (tipo.equals("Normal")){
                                 level=15;
                             }
-                            else if (stuff2.equals("Legendario")){
+                            else if (tipo.equals("Legendario")){
                                 level=30;
                             }
 
-                            //relationEetak.setId(1);
+                            relationEetak.setIdUser(data);
                             relationEetak.setIdEetakemon(id);
                             relationEetak.setLevel(level);
+                            pasarRespuesta(relationEetak);
                         }
-                        bool = true;
+
                     }
                 });
-                if(bool) {
-                    //pasarRespuesta(relationEetak); //S'ha de provar
-                }
             }
 
             @Override
@@ -185,29 +183,51 @@ public class QuestionActivity extends AppCompatActivity {
     }
 
     final public void pasarRespuesta(Relation relationEetak){
-        Service acta1 = retrofit.create(Service.class);
+
+        OkHttpClient.Builder httpClient1 = new OkHttpClient.Builder();
+        Retrofit.Builder builder1 = new Retrofit.Builder()
+                .baseUrl("http://192.168.1.43:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
+                .addConverterFactory(GsonConverterFactory.create());
+
+        Retrofit retrofit1 =
+                builder1
+                        .client(
+                                httpClient1.build()
+                        )
+                        .build();
+
+        Service acta1 = retrofit1.create(Service.class);
+        String token = "Bearer " + TokenSaver.getToken(this);
 
         // Create a call instance for looking up Retrofit contributors.
-        Call<Relation> call2 = acta1.Capturado(relationEetak);
-        Log.d(tag, "CALL: ***********DATOS**************************");
+        Call<String> call2 = acta1.Capturado(token, relationEetak);
+        Log.d(tag, "IDname: "+ relationEetak.getIdUser() + ", IDEetak: " + relationEetak.getIdEetakemon() + ", level: " + relationEetak.getLevel());
 
 
 
         // Fetch and print a list of the contributors to the library.
-        call2.enqueue(new Callback<Relation>() {
+        call2.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<Relation> call, Response<Relation> response) {
+            public void onResponse(Call<String> call, Response<String> response) {
+                if(response.code()==201 || response.code()==200) {
+                    Toast.makeText(QuestionActivity.this, "CAPTURADO", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(QuestionActivity.this, MapsActivity.class);
+                    startActivity(intent);
+                }
+                else if(response.code()==401){
+                    Toast.makeText(QuestionActivity.this, "Error Token", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(QuestionActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                }
 
-                Toast.makeText(QuestionActivity.this, "CAPTURADO", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(QuestionActivity.this, MapsActivity.class);
-                startActivity(intent);
             }
 
             @Override
-            public void onFailure(Call<Relation> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
                 Toast.makeText(QuestionActivity.this, "Error al intentar capturar", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(QuestionActivity.this, MapsActivity.class);
-                startActivity(intent);
+                /*Intent intent = new Intent(QuestionActivity.this, MapsActivity.class);
+                startActivity(intent);*/
 
             }
         });

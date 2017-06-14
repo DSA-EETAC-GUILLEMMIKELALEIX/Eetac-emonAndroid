@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -69,7 +70,7 @@ public class LoginActivity extends AppCompatActivity /*implements LoaderCallback
     EditText mEmail, mPass;
     private Button login;
     MediaPlayer mediaPlayer;
-    public static final String MY_PREFS_NAME = "MyPrefsFIle";
+
         /**
      * Id to identity READ_CONTACTS permission request.
      */
@@ -177,8 +178,10 @@ public class LoginActivity extends AppCompatActivity /*implements LoaderCallback
                                 id=JWTUtils.decoded(token);
                                 Log.d(tag, "EL PUTO ID: " + String.valueOf(id));
 
-                                SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-                                editor.putInt("id",id);
+                                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putInt("id", id);
                                 editor.commit();
 
                             } catch (Exception e) {

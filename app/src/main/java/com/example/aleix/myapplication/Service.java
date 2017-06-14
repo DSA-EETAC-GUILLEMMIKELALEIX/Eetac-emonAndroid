@@ -38,13 +38,13 @@ interface Service {
     Call<List<Captured>> ListarTusEetakemons(@Header("Authorization") String authHeader, @Path("id") int id);
 
     @GET("/EetakemonGo/Eetakemon/ListMapa")
-    Call<List<Capturar>> Eetakname();
+    Call<List<Capturar>> Eetakname(@Header("Authorization") String authHeader);
 
-    @POST("/EetakemonGo/Eetakemon/Question")
-    Call<Question> Pregunta(@Body Eetakemon eetak);
+    @POST("/EetakemonGo/Question/Question")
+    Call<Question> Pregunta(@Header("Authorization") String authHeader,@Body Eetakemon eetak);
 
     @POST("/EetakemonGo/Relation/Capturado")
-    Call<Relation> Capturado(@Body Relation capt);
+    Call<String> Capturado(@Header("Authorization") String authHeader,@Body Relation capt);
 
 
 }

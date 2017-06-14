@@ -265,11 +265,14 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
                         )
                         .build();
 
+        Log.d(tag, "AAAAAA");
+
         // Create an instance of our GitHub API interface.
         Service acta = retrofit.create(Service.class);
+        String token = "Bearer " + TokenSaver.getToken(this);
 
         // Create a call instance for looking up Retrofit contributors.
-        Call<List<Capturar>> call1 = acta.Eetakname();
+        Call<List<Capturar>> call1 = acta.Eetakname(token);
         System.out.println("***********DATOS**************************");
 
 
