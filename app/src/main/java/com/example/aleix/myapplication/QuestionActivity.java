@@ -119,6 +119,7 @@ public class QuestionActivity extends AppCompatActivity {
                                 level=30;
                             }
 
+
                             //relationEetak.setId(1);
                             relationEetak.setIdEetakemon(id);
                             relationEetak.setLevel(level);

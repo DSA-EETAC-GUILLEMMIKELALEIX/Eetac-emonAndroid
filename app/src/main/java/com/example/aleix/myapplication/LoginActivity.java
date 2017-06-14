@@ -3,6 +3,7 @@ package com.example.aleix.myapplication;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
@@ -68,6 +69,7 @@ public class LoginActivity extends AppCompatActivity /*implements LoaderCallback
     EditText mEmail, mPass;
     private Button login;
     MediaPlayer mediaPlayer;
+    public static final String MY_PREFS_NAME = "MyPrefsFIle";
         /**
      * Id to identity READ_CONTACTS permission request.
      */
@@ -174,6 +176,10 @@ public class LoginActivity extends AppCompatActivity /*implements LoaderCallback
                             try {
                                 id=JWTUtils.decoded(token);
                                 Log.d(tag, "EL PUTO ID: " + String.valueOf(id));
+
+                                SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                                editor.putInt("id",id);
+                                editor.commit();
 
                             } catch (Exception e) {
                                 e.printStackTrace();
