@@ -1,6 +1,7 @@
 package com.example.aleix.myapplication;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,7 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class QuestionActivity extends AppCompatActivity {
 
     final String tag = "MAPACT";
-
+    public static final String MY_PREFS_NAME = "MyPrefsFile";
     boolean bool = false;
 
     Retrofit retrofit;
@@ -117,6 +118,11 @@ public class QuestionActivity extends AppCompatActivity {
                             }
                             else if (stuff2.equals("Legendario")){
                                 level=30;
+                            }
+                            SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+                            String restoredText = prefs.getString("text", null);
+                            if (restoredText != null) {
+                                int idName = prefs.getInt("id", 0); //0 is the default value.
                             }
 
 
