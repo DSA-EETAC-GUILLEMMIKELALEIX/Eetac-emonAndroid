@@ -19,8 +19,10 @@ public class JWTUtils {
             Log.d("JWT_DECODED", "Body: " + getJson(split[1]));
             String cuerpo  = getJson(split[1]);
             String [] separated = cuerpo.split(",");
-            String idString = separated[0];
-            id = Integer.parseInt(idString);
+            String idString = separated[1];
+            String [] separated2 = cuerpo.split(":");
+            String idString2 = separated[1];
+            id = Integer.parseInt(idString2);
 
         } catch (UnsupportedEncodingException e) {
             //Error
