@@ -1,18 +1,16 @@
 package com.example.aleix.myapplication.Entity;
 
 
-import com.google.android.gms.maps.model.LatLng;
-
 public class Capturar {
     private Eetakemon eetakemon;
-    public Location LatLong;
+    public Location latLong;
 
     public Capturar(){}
 
     public Capturar(Eetakemon eetakemon, Location location)
     {
         this.eetakemon  = eetakemon;
-        this.LatLong= location;
+        this.latLong = location;
     }
 
     public Eetakemon getEetakemon() {
@@ -24,10 +22,10 @@ public class Capturar {
     }
 
     public Location getLatLong() {
-        return LatLong;
+        return latLong;
     }
 
     public void setLatLong(Location latLong) {
-        LatLong = latLong;
+        this.latLong = latLong;
     }
 }
