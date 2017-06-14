@@ -73,7 +73,7 @@ public class QuestionActivity extends AppCompatActivity {
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("http://10.192.230.97:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
+                .baseUrl("http://192.168.1.43:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
                 .addConverterFactory(GsonConverterFactory.create());
         //
         retrofit =
@@ -119,14 +119,16 @@ public class QuestionActivity extends AppCompatActivity {
                             else if (stuff2.equals("Legendario")){
                                 level=30;
                             }
+                            int idName = 0;
                             SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
                             String restoredText = prefs.getString("text", null);
                             if (restoredText != null) {
-                                int idName = prefs.getInt("id", 0); //0 is the default value.
+                                idName = prefs.getInt("id", 0); //0 is the default value.
                             }
 
+                            Log.d(tag, "IdName: " + idName);
 
-                            //relationEetak.setId(1);
+                            relationEetak.setId(idName);
                             relationEetak.setIdEetakemon(id);
                             relationEetak.setLevel(level);
 
@@ -170,7 +172,7 @@ public class QuestionActivity extends AppCompatActivity {
                     }
                 });
                 if(bool) {
-                    pasarRespuesta(relationEetak); //S'ha de provar
+                    //pasarRespuesta(relationEetak); //S'ha de provar
                 }
             }
 
