@@ -64,7 +64,7 @@ import static android.Manifest.permission.READ_CONTACTS;
  */
 public class LoginActivity extends AppCompatActivity /*implements LoaderCallbacks<Cursor> */{
 
-    String tag = "Login";
+    String tag = "MAPACT";
     EditText mEmail, mPass;
     private Button login;
     MediaPlayer mediaPlayer;
@@ -140,7 +140,7 @@ public class LoginActivity extends AppCompatActivity /*implements LoaderCallback
 
                 OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
                 Retrofit.Builder builder = new Retrofit.Builder()
-                        .baseUrl("http://192.168.0.161:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
+                        .baseUrl("http://10.192.230.97:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
                         .addConverterFactory(GsonConverterFactory.create(gson));
 //
 
@@ -173,14 +173,15 @@ public class LoginActivity extends AppCompatActivity /*implements LoaderCallback
                             TokenSaver.setToken(LoginActivity.this, token);
                             try {
                                 id=JWTUtils.decoded(token);
-                                Log.d(tag, String.valueOf(id));
+                                Log.d(tag, "EL PUTO ID: " + String.valueOf(id));
 
                             } catch (Exception e) {
                                 e.printStackTrace();
+                                Log.d(tag, "no entra");
                             }
 
-                            Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
-                            startActivity(intent);
+                            /*Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
+                            startActivity(intent);*/
                             mediaPlayer.stop();
                             Log.d(tag, "Logueado correctamente");
                         }

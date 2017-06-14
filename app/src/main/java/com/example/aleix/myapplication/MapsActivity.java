@@ -83,6 +83,7 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
     Marker mCurrLocationMarker;
     int eetakemonnormal = 0;
     int eetakemonlegend = 0;
+    List<Capturar> captura;
 
     private Button actbttn;
 
@@ -254,7 +255,7 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
         mMap.clear();
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("http://192.168.0.161:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
+                .baseUrl("http://10.192.230.97:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
                 .addConverterFactory(GsonConverterFactory.create());
 //
         Retrofit retrofit =
@@ -277,7 +278,7 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
             //***************Comprobacion de que recoge los datos**********
             @Override
             public void onResponse(Call<List<Capturar>> call, Response<List<Capturar>> response) {
-                List<Capturar> captura = (List<Capturar>) response.body();
+                captura = (List<Capturar>) response.body();
 
                 Log.d(tag, "Lista size:" + captura.size());
 
@@ -320,8 +321,8 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
                                 .position(loc)
                                 .icon(BitmapDescriptorFactory.fromBitmap(resource)));
 
-                        m1.setTag(eetakemon.getTipo());
-                        m1.setTitle(eetakemon.getNombre());
+                        m1.setTag(eetakemon.getId()+"-"+eetakemon.getNombre()+"-"+eetakemon.getTipo());
+                        //m1.setTitle(eetakemon.getNombre());
                         Log.d(tag, "bbbbbbb");
 
                     }
@@ -352,7 +353,8 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
                 Bundle bundle = new Bundle();
 
                 bundle.putString("nameExtra",arg0.getTitle());
-                bundle.putString("tipoExtra",arg0.getTag().toString());
+                bundle.putString("objetoExtra",arg0.getTag().toString());
+               // bundle.putString("list",captura);
                 intent.putExtras(bundle);
                 startActivity(intent);
                 return false;

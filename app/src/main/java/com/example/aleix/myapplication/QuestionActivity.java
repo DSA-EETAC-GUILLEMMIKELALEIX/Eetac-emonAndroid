@@ -25,15 +25,28 @@ public class QuestionActivity extends AppCompatActivity {
 
     final String tag = "MAPACT";
 
+    boolean bool = false;
+
+    Retrofit retrofit;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question);
 
         Bundle bundle = getIntent().getExtras();
-        final String stuff1 = bundle.getString("nameExtra");
-        final String stuff2 = bundle.getString("tipoExtra");
+        //final String stuff1 = bundle.getString("nameExtra");
+        final String stuff2 = bundle.getString("objetoExtra");
         final int stuff3 = bundle.getInt("id");
+
+        String[] separated = stuff2.split("-");
+        String idstring = separated[0];
+        String name = separated[1];
+        String tipo = separated[2];
+
+        final int id;
+
+        id = Integer.parseInt(idstring);
+
 
         Button volv = (Button) findViewById(R.id.Volver);
 
@@ -46,7 +59,7 @@ public class QuestionActivity extends AppCompatActivity {
         });
 
         TextView mtv = (TextView) findViewById(R.id.textView2);
-        mtv.setText("Eetakemon: " + stuff1.toUpperCase() +  "  Tipo: " + stuff2.toUpperCase());
+        mtv.setText("Eetakemon: " + name.toUpperCase() +  "  Tipo: " + tipo.toUpperCase());
 
         MediaPlayer mediaPlayer;
         mediaPlayer = MediaPlayer.create(this,R.raw.cancion);
@@ -59,10 +72,10 @@ public class QuestionActivity extends AppCompatActivity {
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("http://192.168.0.161:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
+                .baseUrl("http://10.192.230.97:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
                 .addConverterFactory(GsonConverterFactory.create());
         //
-        Retrofit retrofit =
+        retrofit =
                 builder
                         .client(
                                 httpClient.build()
@@ -105,7 +118,9 @@ public class QuestionActivity extends AppCompatActivity {
                             else if (stuff2.equals("Legendario")){
                                 level=30;
                             }
-                            //Falta poner usuario y eetakemon
+
+                            //relationEetak.setId(1);
+                            relationEetak.setIdEetakemon(id);
                             relationEetak.setLevel(level);
 
                         }
@@ -114,7 +129,9 @@ public class QuestionActivity extends AppCompatActivity {
                             Intent intent = new Intent(QuestionActivity.this, MapsActivity.class);
                             startActivity(intent);
                         }
+                        bool = true;
                     }
+
                 });
 
                 No.setOnClickListener(new View.OnClickListener() {
@@ -137,12 +154,17 @@ public class QuestionActivity extends AppCompatActivity {
                             else if (stuff2.equals("Legendario")){
                                 level=30;
                             }
-                            //Falta poner usuario y eetakemon
+
+                            //relationEetak.setId(1);
+                            relationEetak.setIdEetakemon(id);
                             relationEetak.setLevel(level);
                         }
+                        bool = true;
                     }
                 });
-
+                if(bool) {
+                    pasarRespuesta(relationEetak); //S'ha de provar
+                }
             }
 
             @Override
@@ -150,7 +172,10 @@ public class QuestionActivity extends AppCompatActivity {
 
             }
         });
-        /*
+
+    }
+
+    final public void pasarRespuesta(Relation relationEetak){
         Service acta1 = retrofit.create(Service.class);
 
         // Create a call instance for looking up Retrofit contributors.
@@ -171,11 +196,12 @@ public class QuestionActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Relation> call, Throwable t) {
+                Toast.makeText(QuestionActivity.this, "Error al intentar capturar", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(QuestionActivity.this, MapsActivity.class);
+                startActivity(intent);
 
             }
         });
-*/
-
     }
 
 }

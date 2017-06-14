@@ -43,7 +43,7 @@ interface Service {
     @POST("/EetakemonGo/Eetakemon/Question")
     Call<Question> Pregunta(@Body Eetakemon eetak);
 
-    @POST("/EetakemonGo/Eetakemon/Capturado")
+    @POST("/EetakemonGo/Relation/Capturado")
     Call<Relation> Capturado(@Body Relation capt);
 
 
