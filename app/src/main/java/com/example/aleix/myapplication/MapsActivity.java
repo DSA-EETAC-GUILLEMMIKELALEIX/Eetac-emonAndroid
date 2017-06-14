@@ -255,7 +255,7 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
         mMap.clear();
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.43:8081")
+                .baseUrl("http://10.0.2.2:8080")
                 .addConverterFactory(GsonConverterFactory.create());
 //
         Retrofit retrofit =

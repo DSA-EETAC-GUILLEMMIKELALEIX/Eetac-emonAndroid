@@ -95,7 +95,7 @@ public class EetakemonAdapter extends BaseAdapter{
                 .override(150, 150)
                 .into(thumbnailImageView);
 
-        if(eetak.getNombre().equals("Bernorlax")) {
+       /* if(eetak.getNombre().equals("Bernorlax")) {
             thumbnailImageView.setImageResource(R.drawable.bernorlax);
         }
         else if(eetak.getNombre().equals("Davyphno")) {
@@ -115,7 +115,7 @@ public class EetakemonAdapter extends BaseAdapter{
         }
         else if(eetak.getNombre().equals("Mewdecerio")) {
             thumbnailImageView.setImageResource(R.drawable.mewdecerio);
-        }
+        }*/
 
         return convertView;
     }
