@@ -36,7 +36,7 @@ public class QuestionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_question);
 
         Bundle bundle = getIntent().getExtras();
-        //final String stuff1 = bundle.getString("nameExtra");
+        //  final String stuff1 = bundle.getString("nameExtra");
         final String stuff2 = bundle.getString("objetoExtra");
         final int stuff3 = bundle.getInt("id");
 
