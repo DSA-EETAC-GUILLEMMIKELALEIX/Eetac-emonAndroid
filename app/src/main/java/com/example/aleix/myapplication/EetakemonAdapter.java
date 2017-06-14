@@ -16,9 +16,6 @@ import com.example.aleix.myapplication.Entity.Eetakemon;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Aleix on 31/05/2017.
- */
 
 public class EetakemonAdapter extends BaseAdapter{
     private Context mContext;

@@ -11,9 +11,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by aleix on 22/05/2017.
- */
 
 // Clase que define y permite crear objetos Eetakemon
 public class Eetakemon implements Serializable{

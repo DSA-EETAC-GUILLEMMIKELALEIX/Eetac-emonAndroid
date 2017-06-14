@@ -73,7 +73,7 @@ public class QuestionActivity extends AppCompatActivity {
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.43:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
+                .baseUrl("http://192.168.1.43:8081")
                 .addConverterFactory(GsonConverterFactory.create());
         //
         retrofit =
@@ -86,7 +86,7 @@ public class QuestionActivity extends AppCompatActivity {
         // Create an instance of our GitHub API interface.
         Service acta = retrofit.create(Service.class);
         Eetakemon e = new Eetakemon();
-        e.setTipo(stuff2);
+        e.setTipo(tipo);
 
         // Create a call instance for looking up Retrofit contributors.
         Call<Question> call1 = acta.Pregunta(e);

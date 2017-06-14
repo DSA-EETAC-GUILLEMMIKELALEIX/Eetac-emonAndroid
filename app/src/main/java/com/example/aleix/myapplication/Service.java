@@ -16,10 +16,6 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
-/**
- * Created by aleix on 23/05/2017.
- */
-
 interface Service {
 
     @POST("/EetakemonGo/Eetakemon/Tipo")

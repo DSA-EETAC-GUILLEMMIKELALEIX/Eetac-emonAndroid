@@ -5,9 +5,7 @@ import android.util.Log;
 
 import java.io.UnsupportedEncodingException;
 
-/**
- * Created by usuario on 14/06/2017.
- */
+
 
 public class JWTUtils {
 

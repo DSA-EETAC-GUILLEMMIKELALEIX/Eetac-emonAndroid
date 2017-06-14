@@ -1,8 +1,6 @@
 package com.example.aleix.myapplication.Entity;
 
-/**
- * Created by aleix on 18/05/2017.
- */
+
 
 public class User {
     private int id;
