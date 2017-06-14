@@ -3,9 +3,6 @@ package com.example.aleix.myapplication.Entity;
 
 import com.google.android.gms.maps.model.LatLng;
 
-/**
- * Created by aleix on 05/06/2017.
- */
 public class Capturar {
     private Eetakemon eetakemon;
     public Location LatLong;

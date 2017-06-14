@@ -15,9 +15,7 @@ import com.example.aleix.myapplication.Entity.Relation;
 
 import java.util.List;
 
-/**
- * Created by Aleix on 31/05/2017.
- */
+
 
 public class RelationAdapter extends BaseAdapter{
     private Context mContext;
