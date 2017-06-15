@@ -42,7 +42,7 @@ public class QuestionActivity extends AppCompatActivity {
 
         String[] separated = stuff2.split("-");
         String idstring = separated[0];
-        String name = separated[1];
+        final String name = separated[1];
         final String tipo = separated[2];
 
         final int id;
@@ -74,7 +74,7 @@ public class QuestionActivity extends AppCompatActivity {
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.43:8081")
+                .baseUrl("http://192.168.1.40:8081")
                 .addConverterFactory(GsonConverterFactory.create());
         //
         retrofit =
@@ -132,6 +132,11 @@ public class QuestionActivity extends AppCompatActivity {
                             relationEetak.setLevel(level);
 
                             pasarRespuesta(relationEetak);
+
+                            Bundle bundle = new Bundle();
+                            Intent intent = new Intent(QuestionActivity.this, CapturedActivity.class);
+                            bundle.putString("nameEetak", name);
+                            startActivity(intent);
                         }
                         if(quest.getAnswer()==0){
                             //Error volver al mapa y eliminar el marker
@@ -168,6 +173,11 @@ public class QuestionActivity extends AppCompatActivity {
                             relationEetak.setIdEetakemon(id);
                             relationEetak.setLevel(level);
                             pasarRespuesta(relationEetak);
+
+                            Bundle bundle = new Bundle();
+                            Intent intent = new Intent(QuestionActivity.this, CapturedActivity.class);
+                            bundle.putString("nameEetak", name);
+                            startActivity(intent);
                         }
 
                     }
@@ -186,7 +196,7 @@ public class QuestionActivity extends AppCompatActivity {
 
         OkHttpClient.Builder httpClient1 = new OkHttpClient.Builder();
         Retrofit.Builder builder1 = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.43:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
+                .baseUrl("http://192.168.1.40:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
                 .addConverterFactory(GsonConverterFactory.create());
 
         Retrofit retrofit1 =

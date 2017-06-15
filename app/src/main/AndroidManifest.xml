@@ -62,7 +62,8 @@
         <activity android:name=".MenuActivity" />
         <activity android:name=".QuestionActivity" />
         <activity android:name=".EetakedexActivity" />
-        <activity android:name=".TusEetakemonsActivity"></activity>
+        <activity android:name=".TusEetakemonsActivity" />
+        <activity android:name=".CapturedActivity"></activity>
     </application>
 
 </manifest>

@@ -53,5 +53,8 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:+'
 }
 dependencies {
+    compile 'com.android.support.constraint:constraint-layout:+'
+}
+dependencies {
     compile 'com.google.android.gms:play-services:10.2.4'
 }

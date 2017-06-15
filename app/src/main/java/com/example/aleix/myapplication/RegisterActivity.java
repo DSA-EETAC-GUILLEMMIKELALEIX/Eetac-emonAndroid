@@ -54,7 +54,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
                 Retrofit.Builder builder = new Retrofit.Builder()
-                        .baseUrl("http://192.168.1.43:8081")
+                        .baseUrl("http://192.168.1.40:8081")
                         .addConverterFactory(GsonConverterFactory.create(gson));
 
                 Retrofit retrofit =
