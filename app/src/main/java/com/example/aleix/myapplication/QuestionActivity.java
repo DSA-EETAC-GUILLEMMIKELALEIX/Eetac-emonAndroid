@@ -27,6 +27,7 @@ public class QuestionActivity extends AppCompatActivity {
 
     final String tag = "MAPACT";
     public static final String MY_PREFS_NAME = "MyPrefsFile";
+
     boolean bool = false;
 
     Retrofit retrofit;
