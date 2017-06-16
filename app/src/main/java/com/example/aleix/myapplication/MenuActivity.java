@@ -41,5 +41,26 @@ public class MenuActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Button Statistics = (Button) findViewById(R.id.Estadisticas);
+
+        Statistics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MenuActivity.this, StatisticsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Button Logout = (Button) findViewById(R.id.Salir);
+
+        Logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MenuActivity.this, LogoutActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 }
