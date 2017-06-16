@@ -133,6 +133,7 @@ public class QuestionActivity extends AppCompatActivity {
                         }
                         if(quest.getAnswer()==0){
                             //Error volver al mapa y eliminar el marker
+                            Toast.makeText(QuestionActivity.this, "NO CAPTURADO", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(QuestionActivity.this, MapsActivity.class);
                             startActivity(intent);
                         }
@@ -146,6 +147,8 @@ public class QuestionActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         if(quest.getAnswer()==1){
                             //Error volver al mapa y eliminar el marker
+
+                            Toast.makeText(QuestionActivity.this, "NO CAPTURADO", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(QuestionActivity.this, MapsActivity.class);
                             startActivity(intent);
                         }
@@ -200,7 +203,6 @@ public class QuestionActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<String> call2, Response<String> response) {
                 if(response.code()==201 || response.code()==200) {
-                    Toast.makeText(QuestionActivity.this, "CAPTURADO", Toast.LENGTH_SHORT).show();
 
                     Bundle bundle = new Bundle();
                     Intent intent = new Intent(QuestionActivity.this, CapturedActivity.class);
