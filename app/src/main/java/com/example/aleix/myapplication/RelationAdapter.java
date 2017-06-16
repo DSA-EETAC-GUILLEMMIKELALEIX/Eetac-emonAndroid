@@ -89,10 +89,11 @@ public class RelationAdapter extends BaseAdapter{
         Captured eetak = (Captured) getItem(position);
 
 
-        Log.d(tag, "BBBBBB");
+        Log.d(tag, "BBBBBB: "+ eetak.getFoto());
 
         // Update row view's textviews to display recipe information
         titleTextView.setText(eetak.getIdEetakemon() + ": " + eetak.getName());
+        detailTextView.setText("Nivel: " + eetak.getLevel());
 
         Glide.with(mContext)
                 .load(eetak.getFoto())

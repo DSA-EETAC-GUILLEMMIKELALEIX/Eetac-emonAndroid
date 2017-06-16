@@ -3,6 +3,8 @@ package com.example.aleix.myapplication;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -58,7 +60,7 @@ public class TusEetakemonsActivity extends AppCompatActivity {
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.40:8081")
+                .baseUrl("http://147.83.7.158:8081")
                 .addConverterFactory(GsonConverterFactory.create(gson));
 //
         Retrofit retrofit =
@@ -73,9 +75,11 @@ public class TusEetakemonsActivity extends AppCompatActivity {
         String token = "Bearer " + TokenSaver.getToken(this);
 
 
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        final int  data = sharedPreferences.getInt("id", 0) ;
 
         // Create a call instance for looking up Retrofit contributors.
-        Call<List<Captured>> call1 = acta.ListarTusEetakemons(token, 1);
+        Call<List<Captured>> call1 = acta.ListarTusEetakemons(token, data);
         Log.d(tag, "CALL: ***********DATOS**************************");
 
 

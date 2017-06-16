@@ -143,7 +143,7 @@ public class LoginActivity extends AppCompatActivity /*implements LoaderCallback
 
                 OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
                 Retrofit.Builder builder = new Retrofit.Builder()
-                        .baseUrl("http://192.168.1.35:8081")
+                        .baseUrl("http://147.83.7.158:8081")
                         .addConverterFactory(GsonConverterFactory.create(gson));
 //
 
@@ -189,7 +189,7 @@ public class LoginActivity extends AppCompatActivity /*implements LoaderCallback
                                 Log.d(tag, "no entra");
                             }
 
-                            Intent intent = new Intent(LoginActivity.this, CapturedActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
                             startActivity(intent);
                             mediaPlayer.stop();
                             Log.d(tag, "Logueado correctamente");

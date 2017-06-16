@@ -15,6 +15,8 @@ import android.widget.Toast;
 import com.example.aleix.myapplication.Entity.Eetakemon;
 import com.example.aleix.myapplication.Entity.Question;
 import com.example.aleix.myapplication.Entity.Relation;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -27,6 +29,8 @@ public class QuestionActivity extends AppCompatActivity {
 
     final String tag = "MAPACT";
     public static final String MY_PREFS_NAME = "MyPrefsFile";
+
+    String name;
 
     boolean bool = false;
 
@@ -43,13 +47,24 @@ public class QuestionActivity extends AppCompatActivity {
 
         String[] separated = stuff2.split("-");
         String idstring = separated[0];
-        final String name = separated[1];
+        name = separated[1];
         final String tipo = separated[2];
 
         final int id;
 
         id = Integer.parseInt(idstring);
 
+
+
+
+        TextView mtv = (TextView) findViewById(R.id.textView2);
+        mtv.setText("Eetakemon: " + name.toUpperCase() +  "  Tipo: " + tipo.toUpperCase());
+
+        final MediaPlayer mediaPlayer;
+        mediaPlayer = MediaPlayer.create(this,R.raw.cancion);
+        mediaPlayer.setLooping(true);
+        mediaPlayer.setVolume(100,100);
+        mediaPlayer.start();
 
         Button volv = (Button) findViewById(R.id.Volver);
 
@@ -58,24 +73,17 @@ public class QuestionActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(QuestionActivity.this, MapsActivity.class);
                 startActivity(intent);
+                mediaPlayer.stop();
             }
         });
 
-        TextView mtv = (TextView) findViewById(R.id.textView2);
-        mtv.setText("Eetakemon: " + name.toUpperCase() +  "  Tipo: " + tipo.toUpperCase());
-
-        MediaPlayer mediaPlayer;
-        mediaPlayer = MediaPlayer.create(this,R.raw.cancion);
-        mediaPlayer.setLooping(true);
-        mediaPlayer.setVolume(100,100);
-        mediaPlayer.start();
 
         final Button Si = (Button) findViewById (R.id.button4);
         final Button No = (Button) findViewById (R.id.button5);
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.40:8081")
+                .baseUrl("http://147.83.7.158:8081")
                 .addConverterFactory(GsonConverterFactory.create());
         //
         retrofit =
@@ -115,36 +123,20 @@ public class QuestionActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         if(quest.getAnswer()==1){
                             //Eetakemon capturado
-                            int level=0;
-                            if (tipo.equals("Inferior")){
-                                level=1;
-                            }
-                            else if (tipo.equals("Normal")){
-                                level=15;
-                            }
-                            else if (tipo.equals("Legendario")){
-                                level=30;
-                            }
-
-                            Log.d(tag, "IdName: " + data);
 
                             relationEetak.setIdUser(data);
                             relationEetak.setIdEetakemon(id);
-                            relationEetak.setLevel(level);
 
                             pasarRespuesta(relationEetak);
 
-                            Bundle bundle = new Bundle();
-                            Intent intent = new Intent(QuestionActivity.this, CapturedActivity.class);
-                            bundle.putString("nameEetak", name);
-                            startActivity(intent);
+
                         }
                         if(quest.getAnswer()==0){
                             //Error volver al mapa y eliminar el marker
                             Intent intent = new Intent(QuestionActivity.this, MapsActivity.class);
                             startActivity(intent);
                         }
-
+                        mediaPlayer.stop();
                     }
 
                 });
@@ -158,29 +150,12 @@ public class QuestionActivity extends AppCompatActivity {
                             startActivity(intent);
                         }
                         if(quest.getAnswer()==0){
-                            //Eetakemon capturado
-                            int level=0;
-                            if (tipo.equals("Inferior")){
-                                level=1;
-                            }
-                            else if (tipo.equals("Normal")){
-                                level=15;
-                            }
-                            else if (tipo.equals("Legendario")){
-                                level=30;
-                            }
 
                             relationEetak.setIdUser(data);
                             relationEetak.setIdEetakemon(id);
-                            relationEetak.setLevel(level);
                             pasarRespuesta(relationEetak);
-
-                            Bundle bundle = new Bundle();
-                            Intent intent = new Intent(QuestionActivity.this, CapturedActivity.class);
-                            bundle.putString("nameEetak", name);
-                            startActivity(intent);
                         }
-
+                        mediaPlayer.stop();
                     }
                 });
             }
@@ -195,10 +170,14 @@ public class QuestionActivity extends AppCompatActivity {
 
     final public void pasarRespuesta(Relation relationEetak){
 
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
         OkHttpClient.Builder httpClient1 = new OkHttpClient.Builder();
         Retrofit.Builder builder1 = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.40:8081")                //poner esta para atacar a la api nuestra 10.0.2.2
-                .addConverterFactory(GsonConverterFactory.create());
+                .baseUrl("http://147.83.7.158:8081")
+                .addConverterFactory(GsonConverterFactory.create(gson));
 
         Retrofit retrofit1 =
                 builder1
@@ -212,30 +191,34 @@ public class QuestionActivity extends AppCompatActivity {
 
         // Create a call instance for looking up Retrofit contributors.
         Call<String> call2 = acta1.Capturado(token, relationEetak);
-        Log.d(tag, "IDname: "+ relationEetak.getIdUser() + ", IDEetak: " + relationEetak.getIdEetakemon() + ", level: " + relationEetak.getLevel());
+        Log.d(tag, "IDname: "+ relationEetak.getIdUser() + ", IDEetak: " + relationEetak.getIdEetakemon());
 
 
 
         // Fetch and print a list of the contributors to the library.
         call2.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(Call<String> call2, Response<String> response) {
                 if(response.code()==201 || response.code()==200) {
                     Toast.makeText(QuestionActivity.this, "CAPTURADO", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(QuestionActivity.this, MapsActivity.class);
+
+                    Bundle bundle = new Bundle();
+                    Intent intent = new Intent(QuestionActivity.this, CapturedActivity.class);
+                    bundle.putString("nameEetak", name);
+                    intent.putExtras(bundle);
                     startActivity(intent);
                 }
                 else if(response.code()==401){
                     Toast.makeText(QuestionActivity.this, "Error Token", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    Toast.makeText(QuestionActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(QuestionActivity.this, "Error: "+ response.code(), Toast.LENGTH_SHORT).show();
                 }
 
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<String> call2, Throwable t) {
                 Toast.makeText(QuestionActivity.this, "Error al intentar capturar", Toast.LENGTH_SHORT).show();
                 /*Intent intent = new Intent(QuestionActivity.this, MapsActivity.class);
                 startActivity(intent);*/

@@ -39,7 +39,7 @@ interface Service {
     @POST("/EetakemonGo/Question/Question")
     Call<Question> Pregunta(@Header("Authorization") String authHeader,@Body Eetakemon eetak);
 
-    @POST("/EetakemonGo/Relation/Capturado")
+    @POST("/EetakemonGo/Relation")
     Call<String> Capturado(@Header("Authorization") String authHeader,@Body Relation capt);
 
 

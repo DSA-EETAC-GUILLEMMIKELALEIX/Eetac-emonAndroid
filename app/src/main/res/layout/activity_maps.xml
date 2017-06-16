@@ -16,6 +16,7 @@
         map:uiZoomGestures="false"
         tools:context="com.example.aleix.myapplication.MapsActivity" />
 
+
     <Button
         android:id="@+id/Menu"
         android:layout_width="wrap_content"

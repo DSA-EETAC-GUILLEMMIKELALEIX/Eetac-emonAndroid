@@ -95,7 +95,7 @@ public class EetakemonAdapter extends BaseAdapter{
                 .override(150, 150)
                 .into(thumbnailImageView);
 
-        /*if(eetak.getNombre().equals("Bernorlax")) {
+       /* if(eetak.getNombre().equals("Bernorlax")) {
             thumbnailImageView.setImageResource(R.drawable.bernorlax);
         }
         else if(eetak.getNombre().equals("Davyphno")) {
