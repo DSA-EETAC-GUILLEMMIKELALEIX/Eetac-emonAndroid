@@ -133,7 +133,7 @@ public class MapsActivity extends FragmentActivity implements  OnMapReadyCallbac
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
         mMap.getUiSettings().setZoomControlsEnabled(false);
-        //UiSettings.setScrollGesturesEnabled(false);
+        mMap.getUiSettings().setScrollGesturesEnabled(false);
 
 
             eetakemons();
